@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Irrigation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL@0;1&display=swap" rel="stylesheet" />
+
+</head>
+<body class="font-sans">
+    <!-- Navbar -->
+    <nav id="navbar" class="flex justify-between items-center px-10 py-5 fixed top-0 w-full z-50 bg-transparent transition-all duration-300">
+      <h1 class="text-2xl font-bold text-green-600">SmartFarm</h1>
+      <ul class="flex space-x-6 text-white font-semibold">
+        <li><a href="#" class="hover:text-green-600">Home</a></li>
+        <li><a href="farmer.php" class="hover:text-green-600">Dashboard</a></li>
+        <li><a href="pricing.html" class="hover:text-green-600">Pricing</a></li>
+        <li>
+          <a href="login.php" class="border-2 border-white rounded-md px-4 py-1 hover:bg-white hover:text-black transition-colors duration-300">
+            Login
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+
+    <div class="video-container">
+        <!-- Background Video -->
+        <video autoplay loop muted playsinline class="background-video">
+            <source src="field2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    
+        <div class="content">
+            <h1>Smart Irrigation System</h1>
+            <p>Optimize water usage with our automated system.</p>
+            <button class="hmBtn" >Get Started</button>
+        </div>
+    </div>
+    
+
+    <section id="features" class="p-8 bg-[#121826] text-white">
+        <h2 class="text-4xl font-bold text-center">Why Choose Smart Irrigation?</h2>
+        <p class="text-xl text-center p-2 text-gray-400">See how much water you can save using our system.</p>
+    
+        <section class="max-w-4xl mx-auto my-10 p-6 bg-[#1c2431] rounded-xl shadow-lg text-center border border-gray-700">
+            <div class="mt-4">
+                <label for="watering-frequency" class="block font-semibold text-gray-300 text-lg">
+                    How often do you water your plants?
+                </label>
+                <select id="watering-frequency" class="mt-2 p-3 border border-gray-600 rounded-lg w-1/2 text-gray-200 bg-[#2a3547]">
+                    <option value="daily">Daily</option>
+                    <option value="every-2-days">Every 2 Days</option>
+                    <option value="weekly">Weekly</option>
+                </select>
+            </div>
+
+            <button onclick="calculateSavings()" class="savings-button">
+                Discover Your Water Savings
+            </button>
+            
+            <p id="savings-result" class="mt-6 text-lg font-semibold text-gray-300"></p>
+        </section>
+    </section>
+    
+
+    <!-- Smart Irrigation Features Section -->
+    <section class="feature-section">
+        <div class="feature-header">
+            <h1><span>Plan smarter, act faster. </span>Turn your irrigation <br> insights into action.</h1>
+            <p></p>
+        </div>
+    
+        <div class="feature-content">
+            <!-- Soil Moisture Box -->
+            <div class="feature-card">
+                <h2>Soil Moisture Levels</h2>
+                <p>Monitor real-time soil moisture to optimize water usage.</p>
+                <span class="data">65%</span>
+            </div>
+        
+            <!-- Next Watering Box -->
+            <div class="feature-card">
+                <h2>Next Scheduled Irrigation</h2>
+                <p>Automated watering based on real-time data and weather insights.</p>
+                <span class="data">5 PM</span>
+            </div>
+        
+            <!-- Weather Box -->
+            <div class="feature-card">
+                <h2>Weather Forecast</h2>
+                <p>Receive localized weather updates to make informed irrigation decisions.</p> 
+                <br>
+                <p id="location">Fetching location...</p>
+                <div id="weather" class="data">Loading...</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="features-text">
+          <div class="feature selected" onclick="showVideo('automated', this)">
+            <span class="bar"></span>
+            <h3>Smart Irrigation Automation</h3>
+            <p>Control water flow based on soil conditions and weather data.</p>
+          </div>
+  
+          <div class="feature" onclick="showVideo('weather', this)">
+            <span class="bar"></span>
+            <h3>Weather-Based Optimization</h3>
+            <p>Adjust irrigation schedules dynamically based on weather forecasts.</p>
+          </div>
+  
+          <div class="feature" onclick="showVideo('remote', this)">
+            <span class="bar"></span>
+            <h3>Remote System Management</h3>
+            <p>Monitor and control your irrigation system from any location.</p>
+          </div>
+        </div>
+  
+        <div class="features-image">
+          <video id="featureVideo" autoplay muted loop>
+            <source id="videoSource" src="field4.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-[#121826] text-white py-16 px-8">
+      <div class="max-w-6xl mx-auto">
+          <h2 class="text-4xl font-bold text-center mb-8">Plant Care Guide</h2>
+          <p class="text-xl text-center mb-12 text-gray-400">Learn optimal watering practices for different types of plants</p>
+          
+          <!-- Tab Navigation -->
+          <div class="flex flex-wrap justify-center mb-8 border-b border-gray-700">
+              <button class="plant-tab-btn selected px-6 py-3 font-medium" onclick="showPlantTab('vegetables')">Vegetables</button>
+              <button class="plant-tab-btn px-6 py-3 font-medium" onclick="showPlantTab('flowers')">Flowers</button>
+              <button class="plant-tab-btn px-6 py-3 font-medium" onclick="showPlantTab('trees')">Trees & Shrubs</button>
+              <button class="plant-tab-btn px-6 py-3 font-medium" onclick="showPlantTab('lawn')">Lawn Care</button>
+          </div>
+          
+
+          <div id="plant-tab-content" class="bg-[#1c2431] rounded-xl p-8 shadow-lg">
+              <div id="vegetables-content" class="plant-content">
+                  <div class="grid md:grid-cols-2 gap-8">
+                      <div>
+                          <h3 class="text-2xl font-bold text-green-500 mb-4">Vegetable Watering Guide</h3>
+                          <p class="mb-4">Most vegetables need 1-1.5 inches of water per week, either from rainfall or irrigation.</p>
+                          <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                              <li><span class="font-semibold text-white">Root vegetables</span> (carrots, beets): Water deeply 1-2 times per week</li>
+                              <li><span class="font-semibold text-white">Leafy greens</span> (lettuce, spinach): More frequent but lighter watering</li>
+                              <li><span class="font-semibold text-white">Fruiting plants</span> (tomatoes, peppers): Deep watering, allowing soil to dry between waterings</li>
+                          </ul>
+                          <p class="mt-4 text-green-400">Our smart sensors can automatically detect moisture levels and provide the perfect amount of water based on vegetable type.</p>
+                      </div>
+                      <div class="bg-[#263244] p-6 rounded-lg">
+                          <h4 class="text-xl font-bold mb-3 text-green-400">Best Watering Practices</h4>
+                          <ul class="space-y-3">
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Water early morning to reduce evaporation</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Use drip irrigation to target plant roots directly</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Mulch around plants to retain moisture</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Adjust watering based on rainfall and temperature</p>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div id="flowers-content" class="plant-content hidden">
+                  <div class="grid md:grid-cols-2 gap-8">
+                      <div>
+                          <h3 class="text-2xl font-bold text-green-500 mb-4">Flower Watering Guide</h3>
+                          <p class="mb-4">Different flower varieties have varying water needs based on their type and growth stage.</p>
+                          <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                              <li><span class="font-semibold text-white">Perennials</span>: Once established, deep watering 1-2 times weekly</li>
+                              <li><span class="font-semibold text-white">Annuals</span>: More frequent watering, especially in hot weather</li>
+                              <li><span class="font-semibold text-white">Drought-tolerant flowers</span>: Minimal watering once established</li>
+                          </ul>
+                          <p class="mt-4 text-green-400">Our smart irrigation system automatically adjusts to ensure optimal moisture levels for beautiful blooms all season.</p>
+                      </div>
+                      <div class="bg-[#263244] p-6 rounded-lg">
+                          <h4 class="text-xl font-bold mb-3 text-green-400">Flower Watering Tips</h4>
+                          <ul class="space-y-3">
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Water at the base to avoid wetting foliage and blooms</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Group plants with similar water needs together</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Newly planted flowers need more frequent watering</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Consider soil type when determining watering frequency</p>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              
+              <div id="trees-content" class="plant-content hidden">
+                  <div class="grid md:grid-cols-2 gap-8">
+                      <div>
+                          <h3 class="text-2xl font-bold text-green-500 mb-4">Trees & Shrubs Guide</h3>
+                          <p class="mb-4">Proper watering is critical for establishing and maintaining healthy trees and shrubs.</p>
+                          <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                              <li><span class="font-semibold text-white">New plantings</span>: Regular deep watering for first 2 years</li>
+                              <li><span class="font-semibold text-white">Established trees</span>: Deep watering during drought periods</li>
+                              <li><span class="font-semibold text-white">Evergreens vs. deciduous</span>: Different seasonal needs</li>
+                          </ul>
+                          <p class="mt-4 text-green-400">Our smart system can be set up with deep-root watering protocols specifically designed for trees and shrubs.</p>
+                      </div>
+                      <div class="bg-[#263244] p-6 rounded-lg">
+                          <h4 class="text-xl font-bold mb-3 text-green-400">Tree Watering Best Practices</h4>
+                          <ul class="space-y-3">
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Water slowly and deeply to encourage deep root growth</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Create a watering ring or basin around new trees</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Use soaker hoses or drip systems around the drip line</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Reduce frequency but increase volume as trees mature</p>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              
+              <div id="lawn-content" class="plant-content hidden">
+                  <div class="grid md:grid-cols-2 gap-8">
+                      <div>
+                          <h3 class="text-2xl font-bold text-green-500 mb-4">Lawn Care Guide</h3>
+                          <p class="mb-4">Keeping your lawn healthy requires understanding watering needs based on grass type, season, and climate.</p>
+                          <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                              <li><span class="font-semibold text-white">Cool-season grasses</span>: More water in spring and fall</li>
+                              <li><span class="font-semibold text-white">Warm-season grasses</span>: Highest needs during summer growth</li>
+                              <li><span class="font-semibold text-white">Establishment</span>: New lawns need frequent, light watering</li>
+                          </ul>
+                          <p class="mt-4 text-green-400">Our smart irrigation system uses soil sensors to determine exactly when your lawn needs water, preventing both over and under-watering.</p>
+                      </div>
+                      <div class="bg-[#263244] p-6 rounded-lg">
+                          <h4 class="text-xl font-bold mb-3 text-green-400">Lawn Watering Tips</h4>
+                          <ul class="space-y-3">
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Water deeply (1-1.5 inches) but infrequently to promote deep roots</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Early morning watering (4-10 AM) is most efficient</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Adjust mowing height seasonally to retain moisture</p>
+                              </li>
+                              <li class="flex items-start">
+                                  <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                  <p>Reduce watering during dormant periods</p>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <section class="smart-vs-traditional">
+      <div class="smart-vs-container">
+        <h2 class="smart-vs-heading">Smart vs. Traditional Irrigation</h2>
+        <p class="smart-vs-subheading">See how our smart system compares to conventional irrigation methods</p>
+    
+        <div class="smart-vs-table-container">
+          <table class="smart-vs-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Smart Irrigation System</th>
+                <th>Traditional Irrigation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="smart-vs-feature">Water Efficiency</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>30-50% water savings with adaptive watering</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>Frequent overwatering and fixed schedules</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Weather Adaptation</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>Automatically adjusts to weather forecasts</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>Continues on schedule regardless of weather</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Soil Moisture Monitoring</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>Real-time soil moisture sensors</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>No moisture monitoring capabilities</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Remote Management</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>Mobile app control from anywhere</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>Manual on-site adjustments only</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Usage Analytics</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>Detailed water usage reports and insights</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>No usage tracking or analytics</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Maintenance Alerts</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>System health monitoring and alerts</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>Manual inspection required</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Initial Investment</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-exclamation-circle smart-vs-icon" style="color:#facc15;"></i>
+                    <p>Higher upfront cost</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>Lower initial installation cost</p>
+                  </div>
+                </td>
+              </tr>
+    
+              <tr>
+                <td class="smart-vs-feature">Long-Term ROI</td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-check-circle smart-vs-icon" style="color:#22c55e;"></i>
+                    <p>Significant savings on water bills</p>
+                  </div>
+                </td>
+                <td>
+                  <div class="smart-vs-icon-text">
+                    <i class="fas fa-times-circle smart-vs-icon" style="color:#ef4444;"></i>
+                    <p>Higher long-term water costs</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </section>
+
+    <section class="success-stories">
+      <div class="success-container">
+        <h2 class="success-heading">Success Stories</h2>
+        <p class="success-subtitle">See how our customers achieved impressive results with Smart Irrigation</p>
+
+        <div class="case-studies">
+          <div class="case-study">
+            <div class="case-grid">
+              <div class="case-image">
+                <div class="image-wrapper">
+                  <div class="image-overlay"></div>
+                  <div class="image-icon"><i class="fas fa-tractor"></i></div>
+                  <div class="image-label">
+                    <h4>Greenfield Farms</h4>
+                    <p>Commercial Agriculture - Punjab</p>
+                  </div>
+                </div>
+              </div>
+              <div class="case-content">
+                <div class="case-title">
+                  <div class="icon"><i class="fas fa-tint"></i></div>
+                  <h3>45% Water Reduction</h3>
+                </div>
+                <p class="case-description">"After implementing the Smart Irrigation system across our 200-acre vegetable farm, we've seen a 45% reduction in water usage while maintaining optimal crop yields."</p>
+                <div class="case-stats">
+                  <div class="stat">
+                    <p class="label">Water Saved</p>
+                    <p class="value">12M Gallons</p>
+                  </div>
+                  <div class="stat">
+                    <p class="label">Cost Savings</p>
+                    <p class="value">₹28,00,000</p>
+                  </div>
+                  <div class="stat">
+                    <p class="label">Yield Impact</p>
+                    <p class="value">+8%</p>
+                  </div>
+                </div>
+                <div class="testimonial">
+                  "The ability to monitor moisture levels remotely and automate based on real-time data has transformed our operations."
+                  <p class="author">— Michael Johnson, Farm Manager</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-study">
+            <div class="case-grid">
+              <div class="case-image">
+                <div class="image-wrapper">
+                  <div class="image-overlay"></div>
+                  <div class="image-icon"><i class="fas fa-building"></i></div>
+                  <div class="image-label">
+                    <h4>Oakridge Society</h4>
+                    <p>Residential Complex - Pune</p>
+                  </div>
+                </div>
+              </div>
+              <div class="case-content">
+                <div class="case-title">
+                  <div class="icon"><i class="fas fa-hand-holding-water"></i></div>
+                  <h3>38% Water Conservation</h3>
+                </div>
+                <p class="case-description">"We implemented Smart Irrigation across all gardens and lawns. The results have been amazing in reducing water bills and keeping landscapes lush."</p>
+                <div class="case-stats">
+                  <div class="stat">
+                    <p class="label">Water Saved</p>
+                    <p class="value">4.2M Litres</p>
+                  </div>
+                  <div class="stat">
+                    <p class="label">Annual Savings</p>
+                    <p class="value">₹21,00,000</p>
+                  </div>
+                  <div class="stat">
+                    <p class="label">Greener Lawns</p>
+                    <p class="value">100%</p>
+                  </div>
+                </div>
+                <div class="testimonial">
+                  "Within a year, we saw ROI and incredible improvement in lawn health, even during the dry season."
+                  <p class="author">— Sarah Rao, Society President</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-study">
+            <div class="case-grid">
+              <div class="case-image">
+                <div class="image-wrapper">
+                  <div class="image-overlay"></div>
+                  <div class="image-icon"><i class="fas fa-tree"></i></div>
+                  <div class="image-label">
+                    <h4>City of Jaipur</h4>
+                    <p>Municipal Parks - Jaipur</p>
+                  </div>
+                </div>
+              </div>
+              <div class="case-content">
+                <div class="case-title">
+                  <div class="icon"><i class="fas fa-leaf"></i></div>
+                  <h3>52% Water Reduction</h3>
+                </div>
+                <p class="case-description">"Across 15 parks, we cut water use in half while actually improving greenery and maintenance efficiency."</p>
+                <div class="case-stats">
+                  <div class="stat">
+                    <p class="label">Water Saved</p>
+                    <p class="value">22M Litres</p>
+                  </div>
+                  <div class="stat">
+                    <p class="label">Budget Saved</p>
+                    <p class="value">₹42,00,000</p>
+                  </div>
+                  <div class="stat">
+                    <p class="label">Public Approval</p>
+                    <p class="value">95%</p>
+                  </div>
+                </div>
+                <div class="testimonial">
+                  "We’ve achieved our sustainability goals with lower costs. Residents are happier than ever."
+                  <p class="author">— Ravi Mehta, Parks Director</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation-dots">
+          <span class="dot active" onclick="switchCaseStudy(0)"></span>
+          <span class="dot" onclick="switchCaseStudy(1)"></span>
+          <span class="dot" onclick="switchCaseStudy(2)"></span>
+        </div>
+      </div>
+    </section>
+      
+      <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-row">
+              <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="FAQs.html">FAQ</a></li>
+                </ul>
+              </div>
+              <div class="footer-socials">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+              </div>
+                <div class="contact-details">
+                    <h3>Contact Us</h3>
+                    <p>Email: support@smartirrigation.com</p>
+                    <p>Phone: +1 234 567 890</p>
+                </div>
+              </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>&copy; 2025 Smart Irrigation System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Chatbot Button -->
+    <div id="chatbot-toggle">
+      <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- Background Overlay Blur -->
+    <div id="chatbot-overlay"></div>
+
+    <!-- Chatbot iframe popup -->
+    <iframe id="chatbot-frame" src="chatbot.html"></iframe>
+
+</body>
+</html>

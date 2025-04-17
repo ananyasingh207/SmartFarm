@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Irrigation - Pricing</title>
+  <link rel="stylesheet" href="pricing.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      #chatbot-toggle {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 45px; 
+      height: 45px; 
+      background-color: transparent;
+      color: #ccc;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px; 
+      cursor: pointer;
+      z-index: 1002;
+      box-shadow: none;
+      transition: all 0.3s ease;
+    }
+
+    #chatbot-toggle.active {
+      background-color: #22c55e;
+      color: white;
+      border-color: #22c55e;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+
+    #chatbot-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backdrop-filter: blur(6px);
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #chatbot-overlay.show {
+      display: block;
+      opacity: 1;
+    }
+
+    #chatbot-frame {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      width: 400px;
+      height: 600px;
+      border: none;
+      border-radius: 20px;
+      z-index: 1001;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    #chatbot-frame.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav class="flex justify-between items-center px-10 py-5 bg-gray-800 backdrop-blur-sm text-white">
+    <h1 class="text-2xl font-bold text-green-500">SmartFarm</h1>
+    <div class="flex items-center space-x-6">
+      <a href="index.html" class="font-semibold hover:text-green-500">Home</a>
+      <a href="farmer.php" class="font-semibold hover:text-green-500">Dashboard</a>
+      <a href="pricing.html" class="font-semibold hover:text-green-500">Pricing</a>
+      <a href="login.php" class="px-4 py-1 border-2 border-white rounded-md hover:bg-white hover:text-black font-semibold">Login</a>
+    </div>
+  </nav>
+  
+  <section class="py-10 px-1 md:px-20">
+    <h2 class="text-4xl font-bold text-center mb-4">Flexible Plans for Every User</h2>
+    <p class="text-center text-gray-400 mb-16">Choose a plan that fits your role and scale.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- Farmer Plan -->
+      <div class="bg-gray-800 p-8 rounded-xl shadow-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl">
+        <h3 class="text-xl font-bold text-green-400 mb-4">Farmer Plan (Free)</h3>
+        <ul class="space-y-3 text-gray-300">
+          <li>✅ Real-time soil moisture tracking</li>
+          <li>✅ Weather-based irrigation alerts</li>
+          <li>✅ Crop-specific watering tips</li>
+          <li>✅ Local service provider suggestions</li>
+          <li>❌ Remote control</li>
+        </ul>
+        <div class="mt-6 text-3xl font-bold">₹0</div>
+      </div>
+      
+      <!-- Service Provider Plan -->
+      <div class="bg-gray-800 p-8 rounded-xl shadow-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl">
+        <div class="text-sm text-green-500 uppercase mb-2">Most Popular</div>
+        <h3 class="text-xl font-bold text-green-400 mb-4">Service Provider Plan</h3>
+        <ul class="space-y-3 text-gray-300">
+          <li>✅ Manage multiple clients</li>
+          <li>✅ Remote irrigation control</li>
+          <li>✅ Scheduling dashboard</li>
+          <li>✅ Water usage reports</li>
+          <li>✅ Premium support</li>
+        </ul>
+        <div class="mt-6 text-3xl font-bold">₹999/mo</div>
+      </div>
+      
+      <!-- Enterprise Plan -->
+      <div class="bg-gray-800 p-8 rounded-xl shadow-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl">
+        <h3 class="text-xl font-bold text-green-400 mb-4">Enterprise Plan</h3>
+        <ul class="space-y-3 text-gray-300">
+          <li>✅ All Pro features</li>
+          <li>✅ API & device integration</li>
+          <li>✅ Admin verification tools</li>
+          <li>✅ White-label dashboards</li>
+          <li>✅ Dedicated onboarding</li>
+        </ul>
+        <div class="mt-6 text-3xl font-bold">Custom</div>
+        <p class="text-sm text-gray-400">Contact us for pricing</p>
+      </div>
+    </div>
+  </section>
+  
+  <div class="header">🌿 Our Smart Irrigation Products</div>
+  
+  <div class="search-container">
+    <input type="text" placeholder="Search products..." id="searchInput">
+    <select id="categorySelect">
+      <option value="all">All Items</option>
+      <option value="seeds">Seeds</option>
+      <option value="pesticides">Pesticides</option>
+      <option value="fertilizers">Fertilizers</option>
+      <option value="irrigation">Irrigation Tools</option>
+    </select>
+  </div>
+  <div class="grid-container" id="productGrid">
+    
+    <!-- Product cards will be inserted here -->
+  </div>
+  <!-- Floating Chatbot Button -->
+  <div id="chatbot-toggle">
+    <i class="fas fa-comment-dots"></i>
+  </div>
+
+  <!-- Background Overlay Blur -->
+  <div id="chatbot-overlay"></div>
+
+  <!-- Chatbot iframe popup -->
+  <iframe id="chatbot-frame" src="chatbot.html"></iframe>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const chatbotBtn = document.getElementById("chatbot-toggle");
+    const chatbotFrame = document.getElementById("chatbot-frame");
+    const chatbotOverlay = document.getElementById("chatbot-overlay");
+
+    chatbotBtn.addEventListener("click", () => {
+      const isOpen = chatbotFrame.classList.contains("show");
+      chatbotFrame.classList.toggle("show");
+      chatbotOverlay.classList.toggle("show");
+      chatbotBtn.classList.toggle("active", !isOpen);
+    });
+
+    chatbotOverlay.addEventListener("click", () => {
+      chatbotFrame.classList.remove("show");
+      chatbotOverlay.classList.remove("show");
+      chatbotBtn.classList.remove("active");
+    });
+  });
+
+  window.addEventListener("message", function (event) {
+    if (event.data.action === "closeChatbot") {
+      document.getElementById("chatbot-frame").classList.remove("show");
+      document.getElementById("chatbot-overlay").classList.remove("show");
+      document.getElementById("chatbot-toggle").classList.remove("active");
+    }
+  });
+      
+    const products = [
+      { name: "Hybrid Tomato Seeds", price: "₹120", image: "tomato.jpeg", category: "seeds" },
+      { name: "Organic Pesticide", price: "₹250", image: "organicseeds.jpeg", category: "pesticides" },
+      { name: "Drip Irrigation Kit", price: "₹950", image: "drip_kit.png", category: "irrigation" },
+      { name: "Urea Fertilizer", price: "₹300", image: "urea.png", category: "fertilizers" },
+      { name: "Wheat Seeds", price: "₹100", image: "wheat.png", category: "seeds" },
+      { name: "Neem-Based Pesticide", price: "₹200", image: "neem.png", category: "pesticides" },
+      { name: "Sprinkler Set", price: "₹1500", image: "sprinkler.png", category: "irrigation" },
+      { name: "Compost Mix", price: "₹350", image: "compost.png", category: "fertilizers" },
+      { name: "Hybrid Corn Seeds", price: "₹180", image: "corn.png", category: "seeds" },
+      { name: "Bio Insecticide", price: "₹275", image: "bio.png", category: "pesticides" },
+      { name: "Smart Sensor Kit", price: "₹1999", image: "sensorkit.png", category: "irrigation" },
+      { name: "NPK Fertilizer", price: "₹400", image: "npk.png", category: "fertilizers" },
+      { name: "Rice Seeds", price: "₹110", image: "rice.png", category: "seeds" },
+      { name: "Advanced Drip Kit", price: "₹2200", image: "adv.png", category: "irrigation" }
+    ];
+
+    const productGrid = document.getElementById('productGrid');
+    const searchInput = document.getElementById('searchInput');
+    const categorySelect = document.getElementById('categorySelect');
+
+    function renderProducts(filterText = '', filterCategory = 'all') {
+      productGrid.innerHTML = '';
+      const filtered = products.filter(p =>
+        (filterCategory === 'all' || p.category === filterCategory) &&
+        p.name.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.category}">
+          <button class="buy-btn">Buy Now</button>
+          <div class="name">${p.name}</div>
+          <div class="price">${p.price}</div>
+        `;
+
+        card.querySelector('.buy-btn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          alert("Thank you for purchasing: " + p.name + " for " + p.price);
+        });
+
+        productGrid.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener('input', () => {
+      renderProducts(searchInput.value, categorySelect.value);
+    });
+
+    categorySelect.addEventListener('change', () => {
+      renderProducts(searchInput.value, categorySelect.value);
+    });
+
+    renderProducts();
+  </script>
+
+</body>
+</html>
