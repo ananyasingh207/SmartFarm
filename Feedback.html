@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback - Smart Irrigation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#121826] text-white min-h-screen flex flex-col justify-center items-center px-4 py-10">
+
+  <!-- Feedback Form -->
+  <div id="formContainer" class="w-full max-w-xl bg-[#1c2431] p-8 rounded-2xl shadow-lg border border-gray-700">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-green-500 mb-2">We Value Your Feedback</h1>
+      <p class="text-gray-400 text-sm">Help us improve your Smart Irrigation experience</p>
+    </div>
+
+    <form id="feedbackForm" method="POST" action="submit_feedback.php" class="space-y-5">
+      <!-- Name -->
+      <div>
+        <label for="name" class="block mb-1 text-sm font-medium text-gray-300">Your Name</label>
+        <span id="nameError" class="text-red-500 text-xs hidden">Please enter your name</span>
+        <input type="text" id="name" name="name"
+          class="w-full mt-1 p-3 rounded-lg bg-[#2a3547] text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block mb-1 text-sm font-medium text-gray-300">Your Email</label>
+        <span id="emailError" class="text-red-500 text-xs hidden">Please enter your email</span>
+        <input type="email" id="email" name="email"
+          class="w-full mt-1 p-3 rounded-lg bg-[#2a3547] text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+
+      <!-- Role -->
+      <div>
+        <label for="role" class="block mb-1 text-sm font-medium text-gray-300">Your Role</label>
+        <span id="roleError" class="text-red-500 text-xs hidden">Please select your role</span>
+        <select id="role" name="role"
+          class="w-full mt-1 p-3 rounded-lg bg-[#2a3547] text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option value="">Select Role</option>
+          <option value="farmer">Farmer</option>
+          <option value="service_provider">Service Provider</option>
+          <option value="manufacturer">Manufacturer</option>
+        </select>
+      </div>
+
+      <!-- Feedback Message -->
+      <div>
+        <label for="message" class="block mb-1 text-sm font-medium text-gray-300">Your Feedback</label>
+        <span id="messageError" class="text-red-500 text-xs hidden">Please enter your feedback</span>
+        <textarea id="message" name="message" rows="4"
+          class="w-full mt-1 p-3 rounded-lg bg-[#2a3547] text-white border border-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Share your thoughts, issues, or suggestions..."></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center pt-4">
+        <button type="submit"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-300">
+          Submit Feedback
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Thank You Message -->
+  <div id="thankYouContainer" class="hidden w-full max-w-md bg-[#1c2431] p-8 rounded-2xl shadow-lg border border-green-600 text-center">
+    <h1 class="text-3xl font-bold text-green-500 mb-4">Thank You for Your Feedback!</h1>
+    <p class="text-gray-300 mb-6">
+      We appreciate your input, <span id="userName" class="font-semibold text-white"></span>. Your role as a
+      <span id="userRole" class="text-green-400 font-semibold"></span> helps us improve.
+    </p>
+    <button onclick="location.reload()" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+      Submit Another Response
+    </button>
+  </div>
+
+  <script>
+    const form = document.getElementById("feedbackForm");
+  
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      // Get values
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const role = document.getElementById("role").value.trim();
+      const message = document.getElementById("message").value.trim();
+  
+      // Error elements
+      const errors = {
+        name: document.getElementById("nameError"),
+        email: document.getElementById("emailError"),
+        role: document.getElementById("roleError"),
+        message: document.getElementById("messageError")
+      };
+  
+      // Hide all errors
+      Object.values(errors).forEach(error => error.classList.add("hidden"));
+  
+      let valid = true;
+  
+      if (!name) {
+        errors.name.classList.remove("hidden");
+        valid = false;
+      }
+      if (!email) {
+        errors.email.classList.remove("hidden");
+        valid = false;
+      }
+      if (!role) {
+        errors.role.classList.remove("hidden");
+        valid = false;
+      }
+      if (!message) {
+        errors.message.classList.remove("hidden");
+        valid = false;
+      }
+  
+      if (!valid) return;  // Stop if validation failed
+  
+      // Create FormData object from the form
+      const formData = new FormData(form);
+      
+      // Submit using fetch with FormData
+      fetch(form.action, {
+        method: form.method,
+        body: formData
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Submission failed");
+        return res.text();
+      })
+      .then(data => {
+        // Save to localStorage only after successful submission
+        localStorage.setItem("feedbackName", name);
+        localStorage.setItem("feedbackRole", role);
+        
+        // Show thank you message
+        document.getElementById("formContainer").classList.add("hidden");
+        document.getElementById("thankYouContainer").classList.remove("hidden");
+        document.getElementById("userName").textContent = name;
+        document.getElementById("userRole").textContent = 
+          role.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Error submitting feedback: " + err.message);
+      });
+    });
+  
+    // Real-time error removal
+    ["name", "email", "role", "message"].forEach(id => {
+      const input = document.getElementById(id);
+      input.addEventListener("input", () => {
+        document.getElementById(id + "Error").classList.add("hidden");
+      });
+      if (id === "role") {
+        input.addEventListener("change", () => {
+          document.getElementById("roleError").classList.add("hidden");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
