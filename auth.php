@@ -5,16 +5,11 @@ use PHPMailer\PHPMailer\Exception;
 require 'src/Exception.php';
 require 'src/PHPMailer.php';
 require 'src/SMTP.php';
+require_once 'db.php';
 
 session_start();
 
-$conn = new mysqli("localhost", "root", "", "irrigation");
-
-if ($conn->connect_error) {
-    error_log("Connection failed: " . $conn->connect_error); // Log error to server logs
-    header("Location: login.php?form=login&error=Something+went+wrong&type=login");
-    exit();
-}
+$conn = Database::getInstance()->getConnection();
 
 // Get form type
 $type = $_POST['type'];
@@ -53,7 +48,11 @@ if ($type === 'register') {
     }
 
     // Check if user already exists
-    $checkUser = $conn->query("SELECT * FROM users WHERE email='$email'");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $checkUser = $stmt->get_result();
+
     if ($checkUser->num_rows > 0) {
         header("Location: login.php?form=register&error=Email+already+registered&type=register");
         exit();
@@ -62,7 +61,11 @@ if ($type === 'register') {
     //$conn->query("INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$password', '$role')");
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $conn->query("INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$hashedPassword', '$role')");
+    
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $name, $email, $hashedPassword, $role);
+    $stmt->execute();
+    $stmt->close();
 
         $mail = new PHPMailer(true);
         try {
@@ -111,7 +114,11 @@ if ($type === 'login') {
         exit();
     }
 
-    $result = $conn->query("SELECT * FROM users WHERE email='$email'");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
 

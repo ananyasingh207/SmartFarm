@@ -55,7 +55,7 @@
     <div class="video-container">
         <!-- Background Video -->
         <video autoplay loop muted playsinline class="background-video">
-            <source src="field2.mp4" type="video/mp4">
+            <source src="media/videos/field2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     
@@ -151,7 +151,7 @@
   
         <div class="features-image">
           <video id="featureVideo" autoplay muted loop>
-            <source id="videoSource" src="field4.mp4" type="video/mp4">
+            <source id="videoSource" src="media/videos/field4.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>

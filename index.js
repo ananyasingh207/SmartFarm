@@ -55,9 +55,9 @@ function calculateSavings() {
 
 
 const videos = {
-    automated: 'field4.mp4',
-    weather: 'field3.mp4',
-    remote: 'sprinkler2.mp4'
+    automated: 'media/videos/field4.mp4',
+    weather: 'media/videos/field3.mp4',
+    remote: 'media/videos/sprinkler2.mp4'
 };
 
 function showVideo(feature) {

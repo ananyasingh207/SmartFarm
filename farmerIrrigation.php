@@ -1,14 +1,8 @@
 <?php
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "irrigation";
+require_once 'db.php';
 
 // Create a single connection to the database
-$conn = new mysqli($host, $username, $password, $dbname);
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+$conn = Database::getInstance()->getConnection();
 
 // Fetch system status - sorting by last maintenance date
 $systemQuery = "SELECT * FROM system_status ORDER BY last_maintenance DESC LIMIT 1";

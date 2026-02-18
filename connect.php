@@ -1,17 +1,9 @@
-<?php
-// Database configuration
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "irrigation";
+require_once 'db.php';
 
-// Create connection using MySQLi
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die('Connection failed: ' . $conn->connect_error);
-}
+// Get connection instance
+$db = Database::getInstance();
+$conn = $db->getConnection();
+$db->setCharset('utf8mb4');
 
 // Set charset to UTF-8 to support special characters
 $conn->set_charset('utf8mb4');

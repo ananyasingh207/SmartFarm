@@ -14,15 +14,10 @@ if ($_SESSION['role'] !== 'farmer') {
     exit();
 }
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "irrigation";
 
-$conn = new mysqli($host, $username, $password, $dbname);
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+
+require_once 'db.php';
+$conn = Database::getInstance()->getConnection();
 
 // Fetch active devices
 $activeDevicesQuery = "SELECT COUNT(*) as total FROM devices WHERE status = 'online'";

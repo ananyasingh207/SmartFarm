@@ -13,16 +13,10 @@ if ($_SESSION['role'] !== 'manufacturer') {
     exit();
 }
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "irrigation";
 
-$conn = new mysqli($host, $username, $password, $dbname);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'db.php';
+$conn = Database::getInstance()->getConnection();
 
 $query = "SELECT * FROM active_device WHERE id = 1"; 
 $result = $conn->query($query);

@@ -1,7 +1,13 @@
 <?php
 session_start();
 if (isset($_POST["submit"])) {
-    $targetDir = "uploads/";
+    $targetDir = "media/uploads/";
+    
+    // Create directory if it doesn't exist
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true);
+    }
+    
     $maxFileSize = 2 * 1024 * 1024; // 2MB
 
     $fileName = basename($_FILES["file"]["name"]);
