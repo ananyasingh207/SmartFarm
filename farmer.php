@@ -5,12 +5,12 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['role'])) {
-    header("Location: login.php");
+    header("Location: auth/login.php");
     exit();
 }
 
 if ($_SESSION['role'] !== 'farmer') {
-    header("Location: login.php");
+    header("Location: auth/login.php");
     exit();
 }
 
@@ -48,826 +48,9 @@ $conn->close();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/hamburger.css">
+  <link rel="stylesheet" href="css/farmer.css">
 </head>
-<style>
-    html {
-  scroll-behavior: smooth;
-  }
-
-
-* {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    background: linear-gradient(135deg, #0B1120 0%, #1e293b 100%);
-    color: #ffffff;
-    min-height: 100vh;
-  }
-
-  /* Hamburger Button */
-  .hamburger-toggle {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 50;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .hamburger-toggle:hover {
-    background-color: #1e293b;
-  }
-
-  .hamburger-toggle span {
-    display: block;
-    width: 24px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 2px;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
-  }
-
-  .hamburger-toggle span:last-child {
-    margin-bottom: 0;
-  }
-
-  .hamburger-toggle:hover span {
-    background: #86efac;
-    transform: scaleX(1.1);
-  }
-
-  .hamburger-toggle.active span:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-    background: #4ade80;
-  }
-
-  .hamburger-toggle.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger-toggle.active span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-    background: #4ade80;
-  }
-
-  /* Sidebar */
-  .sidebar-container {
-    width: 16rem;
-    background-color: #111827;
-    color: #ffffff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 40;
-    transition: transform 0.4s ease-in-out;
-    transform: translateX(-100%);
-  }
-
-  .sidebar-container.open {
-    transform: translateX(0);
-  }
-
-  .sidebar-brand {
-    padding: 3rem 1.5rem 1.5rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .sidebar-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #4ade80;
-  }
-
-  .sidebar-nav {
-    flex: 1;
-    padding: 1rem;
-  }
-
-  .sidebar-nav-item {
-    margin-bottom: 0.75rem;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .sidebar-container.open .sidebar-nav-item:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateX(0); }
-  .sidebar-container.open .sidebar-nav-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateX(0); }
-  .sidebar-container.open .sidebar-nav-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateX(0); }
-  .sidebar-container.open .sidebar-nav-item:nth-child(4) { transition-delay: 0.4s; opacity: 1; transform: translateX(0); }
-  .sidebar-container.open .sidebar-nav-item:nth-child(5) { transition-delay: 0.5s; opacity: 1; transform: translateX(0); }
-  .sidebar-container.open .sidebar-nav-item:nth-child(6) { transition-delay: 0.6s; opacity: 1; transform: translateX(0); }
-
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    color: #ffffff;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-
-  .sidebar-link:hover {
-    background-color: #1e293b;
-  }
-
-  .icon-green {
-    margin-right: 0.75rem;
-    color: #4ade80;
-  }
-
-  .sidebar-footer {
-    padding: 1rem;
-    border-top: 1px solid #1e293b;
-  }
-
-  /* Header */
-  .dashboard-header {
-    background-color: #111827;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-
-  .user-greeting {
-    margin-left: 5rem;
-  }
-
-  .dashboard-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #4ade80;
-  }
-
-  .user-name {
-    color: #cbd5e1;
-    font-size: 1rem;
-  }
-
-  .user-role {
-    color: #cbd5e1;
-    font-size: 0.875rem;
-    opacity: 0.8;
-  }
-
-  .header-controls {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .crop-dropdown {
-    padding: 0.5rem;
-    background-color: #1e293b;
-    border: 1px solid #4ade80;
-    color: #ffffff;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-  }
-
-  .current-date {
-    color: #cbd5e1;
-    font-weight: 500;
-    font-size: 0.875rem;
-  }
-
-  .user-avatar {
-    width: 3rem;  
-    height: 3rem; 
-    border-radius: 50%;
-    border: 2px solid #4ade80; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #1f2937; 
-  }
-  
-  .user-avatar i {
-    font-size: 2.8rem; 
-    color: #4ade80; 
-  }
-  
-  /* Dashboard Content */
-  .dashboard-content {
-    padding: 1.5rem;
-    flex: 1;
-    overflow-y: auto;
-  }
-
-  .dashboard-content::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .dashboard-content::-webkit-scrollbar-track {
-    background: #1e293b;
-  }
-
-  .dashboard-content::-webkit-scrollbar-thumb {
-    background: #4ade80;
-    border-radius: 4px;
-  }
-
-  .dashboard-main {
-    transition: margin-left 0.4s ease-in-out;
-  }
-  .sidebar-container.open + .dashboard-main {
-      margin-left: 16rem;
-  } 
-  @media (max-width: 1024px) {
-      .sidebar-container.open + .dashboard-main {
-          margin-left: 0;
-      }
-  }
-
-  /* Widget Cards */
-  .widget-card {
-    background: rgba(31, 41, 55, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 1.5rem;
-  }
-
-  .widget-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 24px rgba(74, 222, 128, 0.4);
-  }
-
-  .widget-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #4ade80;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .widget-title i {
-    margin-right: 0.5rem;
-  }
-
-  .widget-value {
-    font-size: 1.875rem;
-    font-weight: bold;
-    color: #ffffff;
-  }
-
-  .widget-action {
-    margin-top: 1rem;
-    color: #4ade80;
-    font-weight: 500;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-
-  .widget-action:hover {
-    color: #22c55e;
-  }
-
-  #location{
-    font-size: 1.2rem; 
-    font-weight: bold;  
-    color: #d7d7d7; 
-    margin-top: 0.5rem;
-    transition: color 0.3s ease;
-  }
-
-  #weather {
-    font-size: 1.875rem; 
-    font-weight: bold;  
-    color: #ffffff; 
-    margin-top: 0.5rem;
-  }
-
-  /* Irrigation Control */
-  .irrigation-panel {
-    background: rgba(31, 41, 55, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .irrigation-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #4ade80;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .irrigation-title i {
-    margin-right: 0.5rem;
-  }
-
-  .device-info {
-    color: #cbd5e1;
-    margin-bottom: 1rem;
-  }
-
-  .device-info p {
-    margin-bottom: 0.25rem;
-  }
-
-  .device-status {
-    color: #4ade80;
-    font-weight: 500;
-  }
-
-  .irrigation-buttons {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .irrigation-btn {
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.5rem;
-    background-color: #4ade80;
-    color: #0B1120;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .irrigation-btn:hover {
-    background-color: #22c55e;
-  }
-
-  .irrigation-btn.schedule {
-    background: transparent;
-    border: 1px solid #4ade80;
-    color: #4ade80;
-  }
-
-  .irrigation-btn.schedule:hover {
-    background-color: #4ade80;
-    color: #0B1120;
-  }
-
-  .irrigation-btn.irrigating {
-    background-color: #ef4444;
-    color: #ffffff;
-  }
-
-  .irrigation-btn.irrigating:hover {
-    background-color: #dc2626;
-  }
-
-  #farm-map {
-    height: 16rem;
-    border-radius: 0.5rem;
-  }
-
-  /* Water Usage Tracking */
-  .usage-panel {
-    background: rgba(31, 41, 55, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .usage-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #4ade80;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .usage-title i {
-    margin-right: 0.5rem;
-  }
-
-  .usage-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .time-range {
-    padding: 0.5rem;
-    background-color: #1e293b;
-    border: 1px solid #4ade80;
-    color: #ffffff;
-    border-radius: 0.5rem;
-  }
-
-  .download-report {
-    padding: 0.5rem 1rem;
-    background-color: #4ade80;
-    color: #0B1120;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .download-report:hover {
-    background-color: #22c55e;
-  }
-
-  /* Service Finder */
-  .service-panel {
-    background: rgba(31, 41, 55, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .service-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #4ade80;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .service-title i {
-    margin-right: 0.5rem;
-  }
-
-  .service-search {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-
-  .service-input {
-    flex: 1;
-    padding: 0.75rem;
-    background-color: #1e293b;
-    border: 1px solid #4ade80;
-    color: #ffffff;
-    border-radius: 0.5rem 0 0 0.5rem;
-    outline: none;
-  }
-
-  .service-input:focus {
-    box-shadow: 0 0 0 2px #4ade80;
-  }
-
-  .search-btn {
-    padding: 0.75rem 1.5rem;
-    background-color: #4ade80;
-    color: #0B1120;
-    border: none;
-    border-radius: 0 0.5rem 0.5rem 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .search-btn:hover {
-    background-color: #22c55e;
-  }
-
-  .service-table {
-    width: 100%;
-    border-collapse: collapse;
-    color: #cbd5e1;
-  }
-
-  .service-table th,
-  .service-table td {
-    padding: 0.75rem;
-    text-align: left;
-  }
-
-  .service-table thead {
-    background-color: #1e293b;
-  }
-
-  .service-table th {
-    font-weight: 600;
-    color: #4ade80;
-  }
-
-  .service-table tbody tr:hover {
-    background-color: #1e293b;
-  }
-
-  .contact-btn {
-    color: #4ade80;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-
-  .contact-btn:hover {
-    color: #22c55e;
-  }
-
-  /* Crop Insight */
-.insight-panel {
-  background: rgba(31, 41, 55, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(74, 222, 128, 0.3);
-  padding: 2rem;
-  border-radius: 0.75rem;
-  max-width: 48rem; /* Increased from 32rem to 48rem */
-  margin: 1.5rem auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%; /* Ensures it uses most of the viewport */
-}
-
-/* Insight Form */
-.insight-form {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .insight-form {
-    flex-direction: row;
-    gap: 1.5rem;
-  }
-}
-
-.insight-input {
-  padding: 1rem;
-  background-color: #1e293b;
-  border: 1px solid #4ade80;
-  color: #ffffff;
-  border-radius: 0.5rem;
-  outline: none;
-  flex: 1;
-  width: 100%;
-  font-size: 1rem;
-}
-
-.insight-input::placeholder {
-  color: #cccccc;
-}
-
-/* Insight Button */
-.insight-btn {
-  padding: 1rem 2rem;
-  background-color: #4ade80;
-  color: #0B1120;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  width: 100%;
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 1rem;
-}
-
-@media (min-width: 768px) {
-  .insight-btn {
-    width: auto;
-  }
-}
-
-  .insight-btn:hover {
-    transform: scale(1.05);
-    background-color: #1fc45c;
-  }
-  
-  /* Insight Response */
-  .insight-response {
-    margin-top: 1.5rem;
-    color: #cbd5e1;
-    font-size: 1rem;
-    white-space: pre-wrap;
-  }
-  
-  .insight-response .error {
-    color: #ef4444;
-  }
-  
-  /* Responsive Grid for Widgets */
-  .widget-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  @media (min-width: 640px) {
-    .widget-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .widget-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  /* Irrigation Panel Grid */
-  .irrigation-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  @media (min-width: 1024px) {
-    .irrigation-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  
-  .icon-padding {
-    padding-right: 6px; 
-  }
-  .footer {
-  background-color: #1a2332;
-  color: white;
-  padding: 20px 15px;
-  text-align: center;
-}
-
-.footer-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.footer-row {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.footer-row div {
-  flex: 1;
-  min-width: 160px;
-}
-
-.footer h3 {
-  color: #22c55e;
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.footer p,
-.footer-links ul li a {
-  color: #94a3b8;
-  font-size: 14px;
-}
-
-.footer-links ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-}
-
-.footer-links ul li a {
-  text-decoration: none;
-  transition: color 0.3s ease-in-out;
-}
-
-.footer-links ul li a:hover {
-  color: #22c55e;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-.social-icons a {
-  color: #d1d5db;
-  font-size: 18px;
-  transition: color 0.3s ease-in-out;
-}
-
-.social-icons a:hover {
-  color: #22c55e;
-}
-
-.footer-bottom {
-  border-top: 1px solid #374151;
-  padding-top: 10px;
-  margin-top: 10px;
-  font-size: 13px;
-  color: #94a3b8;
-}
-
-.footer-bottom p {
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .footer-row {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 24px;
-  }
-
-  .footer-links ul {
-    align-items: center;
-  }
-}
-
-#chatbot-toggle {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: 45px; 
-  height: 45px; 
-  background-color: transparent;
-  color: #ccc;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px; 
-  cursor: pointer;
-  z-index: 1002;
-  box-shadow: none;
-  transition: all 0.3s ease;
-}
-
-#chatbot-toggle.active {
-  background-color: #22c55e;
-  color: white;
-  border-color: #22c55e;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-
-#chatbot-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  backdrop-filter: blur(6px);
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-#chatbot-overlay.show {
-  display: block;
-  opacity: 1;
-}
-
-#chatbot-frame {
-  position: fixed;
-  bottom: 100px;
-  right: 25px;
-  width: 400px;
-  height: 600px;
-  border: none;
-  border-radius: 20px;
-  z-index: 1001;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-#chatbot-frame.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-</style>
 <body>
   <!-- Hamburger Button -->
   <div id="hamburger" class="hamburger-toggle">
@@ -891,7 +74,7 @@ $conn->close();
       </ul>
     </nav>
     <div class="sidebar-footer">
-      <a href="logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
+      <a href="auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
     </div>
   </aside>
 
@@ -901,15 +84,11 @@ $conn->close();
     <header class="dashboard-header">
       <div class="user-greeting">
         <h1 class="dashboard-title">Dashboard</h1>
-        <p class="user-name">Welcome, Farmer<?php //echo htmlspecialchars($username); ?></p>
+        <p class="user-name">Welcome, <?php echo htmlspecialchars($_SESSION['name'] ?? 'Farmer'); ?></p>
         <!-- <p class="user-role">(Farmer)</p> -->
       </div>
       <div class="header-controls">
-        <select id="cropSelector" class="crop-dropdown">
-          <option value="wheat">Wheat</option>
-          <option value="rice">Rice</option>
-          <option value="corn">Corn</option>
-        </select>
+
         <span class="current-date"><?php echo date("F j, Y"); ?></span>
         <div class="user-avatar">
             <a href="farmerProfile.php" style="color: #4ade80; text-decoration: none;">
@@ -973,7 +152,7 @@ $conn->close();
             <option value="month">This Month</option>
             <option value="year">This Year</option>
           </select>
-          <button class="download-report">Download Report</button>
+          <button id="downloadReport" class="download-report">Download Report</button>
         </div>
         <canvas id="usageChart" height="100"></canvas>
       </div>
@@ -1068,7 +247,7 @@ $conn->close();
   <div id="chatbot-overlay"></div>
 
   <!-- Chatbot iframe popup -->
-  <iframe id="chatbot-frame" src="chatbot.html"></iframe>
+  <iframe id="chatbot-frame" src="chatbot/chatbot.html"></iframe>
 
   <!-- JavaScript (Including Font Awesome for Icons) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -1100,8 +279,7 @@ $conn->close();
     }
   });
     function fetchWeather(lat, lon) {
-    const apiKey = "846965112d61ecee5abdc3f8255c3893"; 
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+    const url = `weather_api.php?lat=${lat}&lon=${lon}`;
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -1154,7 +332,7 @@ $conn->close();
 
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', (e) => {
-      if (window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+      if (window.innerWidth < 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
         sidebar.classList.remove('open');
         hamburger.classList.remove('active');
       }
@@ -1180,9 +358,7 @@ $conn->close();
     });
 
     // Crop Selector (Placeholder)
-    document.getElementById('cropSelector').addEventListener('change', (e) => {
-      alert(`Selected crop: ${e.target.value}`);
-    });
+
 
     // Farm Plot Map
     // Initialize the map centered on Phagwara, Punjab
@@ -1194,14 +370,14 @@ $conn->close();
     }).addTo(map);
 
     // Water Usage Chart
-
-    const usageChart = new Chart(document.getElementById('usageChart'), {
+    const ctx = document.getElementById('usageChart').getContext('2d');
+    const usageChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        labels: [], // Dynamic
         datasets: [{
           label: 'Water Usage (Liters)',
-          data: [120, 150, 130, 170, 140, 160, 145],
+          data: [], // Dynamic
           backgroundColor: '#1d8043',
           borderColor: '#afb3b0',
           borderWidth: 1
@@ -1212,44 +388,51 @@ $conn->close();
           y: {
             beginAtZero: true,
             ticks: { color: '#cbd5e1' },
-            grid: {
-              color: '#374151'  
-            }
+            grid: { color: '#374151' }
           },
           x: {
             ticks: { color: '#cbd5e1' },
-            grid: {
-              color: '#374151'  
-            }
+            grid: { color: '#374151' }
           }
         },
         plugins: {
           legend: {
-            labels: {
-              color: '#cbd5e1'
-            }
+            labels: { color: '#cbd5e1' }
           }
         }
       }
     });
 
+    // Fetch Data Function
+    function fetchDashboardData(range) {
+        fetch(`getDashboardWaterData.php?range=${range}`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+                
+                usageChart.data.labels = data.labels;
+                usageChart.data.datasets[0].data = data.data;
+                usageChart.update();
+            })
+            .catch(error => console.error('Fetch error:', error));
+    }
+
+    // Initial Load
+    fetchDashboardData('week');
+
     // Time Range Filter
     document.getElementById('timeRange').addEventListener('change', (e) => {
       const range = e.target.value;
-      let newData, newLabels;
-      if (range === 'week') {
-        newData = [120, 150, 130, 170, 140, 160, 145];
-        newLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-      } else if (range === 'month') {
-        newData = [500, 600, 550, 620];
-        newLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-      } else {
-        newData = [5000, 5200, 5100, 5300];
-        newLabels = ['Q1', 'Q2', 'Q3', 'Q4'];
-      }
-      usageChart.data.datasets[0].data = newData;
-      usageChart.data.labels = newLabels;
-      usageChart.update();
+      fetchDashboardData(range);
+    });
+
+    // Download Report Button
+    document.getElementById('downloadReport').addEventListener('click', () => {
+      const range = document.getElementById('timeRange').value;
+      window.location.href = `download_report.php?range=${range}`;
     });
 
     // Service Finder Search

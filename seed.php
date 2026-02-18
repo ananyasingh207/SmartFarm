@@ -153,6 +153,62 @@ try {
         echo "'active_device' table - Skipped (already contains data).\n";
     }
 
+    // --- 10. Dashboard Water Usage (daily_water_usage) ---
+    // Ensure the table exists
+    $conn->query("CREATE TABLE IF NOT EXISTS daily_water_usage (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        date DATE NOT NULL UNIQUE,
+        usage_liters DECIMAL(10,2) NOT NULL,
+        target_liters DECIMAL(10,2) NOT NULL
+    )");
+
+    // Check if data covers current date range (not just old static April data)
+    $latestCheck = $conn->query("SELECT MAX(date) as latest FROM daily_water_usage");
+    $latestRow = $latestCheck ? $latestCheck->fetch_assoc() : null;
+    $needsReseed = true;
+
+    if ($latestRow && $latestRow['latest']) {
+        $daysDiff = (strtotime(date('Y-m-d')) - strtotime($latestRow['latest'])) / 86400;
+        if ($daysDiff <= 1) {
+            $needsReseed = false; // Data is already current
+        }
+    }
+
+    if ($needsReseed) {
+        echo "Seeding 'daily_water_usage' table (365 days)... ";
+
+        // Clear old static data (e.g., April 2025 from queries file)
+        $conn->query("TRUNCATE TABLE daily_water_usage");
+        
+        $stmt = $conn->prepare("INSERT INTO daily_water_usage (date, usage_liters, target_liters) VALUES (?, ?, ?)");
+        
+        // Seed last 365 days with realistic seasonal variation
+        for ($i = 364; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-$i days"));
+            
+            // Seasonal variation using sine wave (higher in summer, lower in winter)
+            $dayOfYear = date('z', strtotime($date)); // 0-365
+            $seasonalFactor = sin(($dayOfYear - 80) * M_PI / 182.5); // Peak around June
+            
+            // Base usage 110-160, seasonal swing ±30, daily noise ±15
+            $baseUsage = 135;
+            $usage = $baseUsage + ($seasonalFactor * 30) + rand(-15, 15);
+            $usage = max(80, min(200, round($usage, 2))); // Clamp to 80-200
+            
+            // Target varies slightly by month
+            $month = (int)date('n', strtotime($date));
+            $targets = [120, 120, 130, 140, 150, 160, 160, 155, 145, 135, 125, 120];
+            $target = $targets[$month - 1];
+            
+            $stmt->bind_param("sdd", $date, $usage, $target);
+            $stmt->execute();
+        }
+        $stmt->close();
+        echo "Done. (Inserted 365 days ending " . date('Y-m-d') . ")\n";
+    } else {
+        echo "'daily_water_usage' table - Skipped (already contains current data).\n";
+    }
+
     echo "--------------------------------------------------\n";
     echo "Seeding process completed successfully!\n";
 

@@ -2,10 +2,12 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require 'src/Exception.php';
-require 'src/PHPMailer.php';
-require 'src/SMTP.php';
-require_once 'db.php';
+require __DIR__ . '/../src/Exception.php';
+require __DIR__ . '/../src/PHPMailer.php';
+require __DIR__ . '/../src/SMTP.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../env_loader.php';
+loadEnv(__DIR__ . '/../.env');
 
 session_start();
 
@@ -65,19 +67,20 @@ if ($type === 'register') {
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $name, $email, $hashedPassword, $role);
     $stmt->execute();
+    $userId = $stmt->insert_id;
     $stmt->close();
 
         $mail = new PHPMailer(true);
         try {
-            $mail->isSMTP();                                  
-            $mail->Host       = 'smtp.gmail.com';            
-            $mail->SMTPAuth   = true;                        
-            $mail->Username   = 'singhananyaa1518@gmail.com';  
-            $mail->Password   = 'bnld osjh bdww chye';    
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
-            $mail->Port       = 587;                        
+            $mail->isSMTP();
+            $mail->Host       = $_ENV['MAIL_HOST'];
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $_ENV['MAIL_USERNAME'];
+            $mail->Password   = $_ENV['MAIL_PASSWORD'];
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = intval($_ENV['MAIL_PORT']);
 
-            $mail->setFrom('singhananyaa1518@gmail.com', 'Smart Irrigation');
+            $mail->setFrom($_ENV['MAIL_USERNAME'], $_ENV['MAIL_FROM_NAME'] ?? 'Smart Irrigation');
             $mail->addAddress($email, $name); 
 
             $mail->isHTML(true);                             
@@ -91,16 +94,18 @@ if ($type === 'register') {
         }
 
         // Set session variables
+        $_SESSION['user_id'] = $userId;
         $_SESSION['name'] = $name;
+        $_SESSION['email'] = $email;
         $_SESSION['role'] = $role;
 
         // Redirect to role dashboard
         if ($role === 'farmer') {
-            header("Location: farmer.php");
+            header("Location: ../farmer.php");
         } elseif ($role === 'manufacturer') {
-            header("Location: manufacturer.php");
+            header("Location: ../manufacturer.php");
         } else {
-            header("Location: service.php");
+            header("Location: ../service.php");
         }    
         exit();
 }
@@ -124,21 +129,23 @@ if ($type === 'login') {
 
         // Verify password
         if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
+            $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
 
             // Send the login email
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';
+                $mail->Host = $_ENV['MAIL_HOST'];
                 $mail->SMTPAuth = true;
-                $mail->Username = 'singhananyaa1518@gmail.com';
-                $mail->Password = 'bnld osjh bdww chye';
+                $mail->Username = $_ENV['MAIL_USERNAME'];
+                $mail->Password = $_ENV['MAIL_PASSWORD'];
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port = 587;
+                $mail->Port = intval($_ENV['MAIL_PORT']);
 
-                $mail->setFrom('singhananyaa1518l@gmail.com', 'Smart Irrigation');
+                $mail->setFrom($_ENV['MAIL_USERNAME'], $_ENV['MAIL_FROM_NAME'] ?? 'Smart Irrigation');
                 $mail->addAddress($email, $user['name']);
 
                 $mail->isHTML(true);
@@ -153,11 +160,11 @@ if ($type === 'login') {
 
             // Redirect to role dashboard
             if ($user['role'] === 'farmer') {
-                header("Location: farmer.php");
+                header("Location: ../farmer.php");
             } elseif ($user['role'] === 'manufacturer') {
-                header("Location: manufacturer.php");
+                header("Location: ../manufacturer.php");
             } else {
-                header("Location: service.php");
+                header("Location: ../service.php");
             }
             exit();
         } else {

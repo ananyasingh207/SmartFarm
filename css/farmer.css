@@ -1,0 +1,1044 @@
+/* =========================================
+   Global & Reset
+   ========================================= */
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0B1120 0%, #1e293b 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* =========================================
+   Common Components
+   ========================================= */
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 0.75rem;
+}
+
+/* Icons */
+.icon-green {
+    margin-right: 0.75rem;
+    color: #4ade80;
+}
+
+.icon-padding {
+    padding-right: 6px;
+}
+
+/* =========================================
+   Sidebar Structure
+   ========================================= */
+.sidebar-container {
+    width: 16rem;
+    background-color: #111827;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 40;
+    transition: transform 0.4s ease-in-out;
+    transform: translateX(-100%);
+}
+
+.sidebar-container.open {
+    transform: translateX(0);
+}
+
+.sidebar-brand {
+    padding: 3rem 1.5rem 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Profile page has slightly different padding, but this should be safe standard */
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4ade80;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem;
+}
+
+.sidebar-nav-item,
+.menu-item {
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Sidebar Animation Delays */
+.sidebar-container.open .sidebar-nav-item:nth-child(1),
+.sidebar-container.open .menu-item:nth-child(1) {
+    transition-delay: 0.1s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(2),
+.sidebar-container.open .menu-item:nth-child(2) {
+    transition-delay: 0.2s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(3),
+.sidebar-container.open .menu-item:nth-child(3) {
+    transition-delay: 0.3s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(4),
+.sidebar-container.open .menu-item:nth-child(4) {
+    transition-delay: 0.4s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(5),
+.sidebar-container.open .menu-item:nth-child(5) {
+    transition-delay: 0.5s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(6),
+.sidebar-container.open .menu-item:nth-child(6) {
+    transition-delay: 0.6s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background-color: #1e293b;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #1e293b;
+}
+
+/* =========================================
+   Reference to Hamburger 
+   (Overrides for farmer pages if needed, but keeping primarily in hamburger.css)
+   ========================================= */
+/* .hamburger-toggle defined in hamburger.css */
+
+/* =========================================
+   Layout & Main Content
+   ========================================= */
+.dashboard-main {
+    transition: margin-left 0.4s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar-container.open+.dashboard-main {
+    margin-left: 16rem;
+}
+
+@media (max-width: 1024px) {
+    .sidebar-container.open+.dashboard-main {
+        margin-left: 0;
+    }
+}
+
+.dashboard-content,
+.content {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Scrollbar Styling */
+.dashboard-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dashboard-content::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+.dashboard-content::-webkit-scrollbar-thumb {
+    background: #4ade80;
+    border-radius: 4px;
+}
+
+/* =========================================
+   Header
+   ========================================= */
+.dashboard-header,
+.header {
+    background-color: #111827;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.user-greeting {
+    margin-left: 5rem;
+}
+
+.dashboard-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4ade80;
+}
+
+.user-name {
+    color: #cbd5e1;
+    font-size: 1rem;
+}
+
+.user-role {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+.breadcrumb {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.breadcrumb a {
+    color: #4ade80;
+    text-decoration: none;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.current-date {
+    color: #cbd5e1;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.user-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 2px solid #4ade80;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1f2937;
+}
+
+.user-avatar i {
+    font-size: 2.8rem;
+    color: #4ade80;
+}
+
+/* =========================================
+   Dashboard Widgets (farmer.php)
+   ========================================= */
+.widget-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .widget-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .widget-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.widget-card {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.widget-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(74, 222, 128, 0.4);
+}
+
+.widget-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.widget-title i {
+    margin-right: 0.5rem;
+}
+
+.widget-value {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.widget-action {
+    margin-top: 1rem;
+    color: #4ade80;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.widget-action:hover {
+    color: #22c55e;
+}
+
+#location {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #d7d7d7;
+    margin-top: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+#weather {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 0.5rem;
+}
+
+/* =========================================
+   Irrigation Control (farmer.php)
+   ========================================= */
+.irrigation-panel {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.irrigation-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.irrigation-title i {
+    margin-right: 0.5rem;
+}
+
+.irrigation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .irrigation-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.device-info {
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+.device-info p {
+    margin-bottom: 0.25rem;
+}
+
+.device-status {
+    color: #4ade80;
+    font-weight: 500;
+}
+
+.irrigation-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.irrigation-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #4ade80;
+    color: #0B1120;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.irrigation-btn:hover {
+    background-color: #22c55e;
+}
+
+.irrigation-btn.schedule {
+    background: transparent;
+    border: 1px solid #4ade80;
+    color: #4ade80;
+}
+
+.irrigation-btn.schedule:hover {
+    background-color: #4ade80;
+    color: #0B1120;
+}
+
+.irrigation-btn.irrigating {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.irrigation-btn.irrigating:hover {
+    background-color: #dc2626;
+}
+
+#farm-map {
+    height: 16rem;
+    border-radius: 0.5rem;
+}
+
+/* =========================================
+   Water Usage & General Panels
+   ========================================= */
+.usage-panel,
+.panel,
+.service-panel {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.usage-title,
+.panel-title,
+.service-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.usage-title i,
+.panel-title i,
+.service-title i {
+    margin-right: 0.5rem;
+}
+
+.usage-controls,
+.time-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.time-range {
+    padding: 0.5rem;
+    background-color: #1e293b;
+    border: 1px solid #4ade80;
+    color: #ffffff;
+    border-radius: 0.5rem;
+}
+
+.download-report,
+.export-btn {
+    padding: 0.5rem 1rem;
+    background-color: #4ade80;
+    color: #0B1120;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-report:hover,
+.export-btn:hover {
+    background-color: #22c55e;
+}
+
+/* Time Buttons (Water Page) */
+.time-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.time-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid #4ade80;
+    color: #cbd5e1;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-btn.active {
+    background-color: #4ade80;
+    color: #0B1120;
+}
+
+/* Summary Grid (Water Page) */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-card {
+    background: rgba(31, 41, 55, 0.5);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.summary-label {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin-bottom: 0.5rem;
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.saving {
+    color: #4ade80;
+}
+
+.warning {
+    color: #fcd34d;
+}
+
+/* =========================================
+   Service Finder Logic
+   ========================================= */
+.service-search {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.service-input {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: #1e293b;
+    border: 1px solid #4ade80;
+    color: #ffffff;
+    border-radius: 0.5rem 0 0 0.5rem;
+    outline: none;
+}
+
+.service-input:focus {
+    box-shadow: 0 0 0 2px #4ade80;
+}
+
+.search-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: #4ade80;
+    color: #0B1120;
+    border: none;
+    border-radius: 0 0.5rem 0.5rem 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #22c55e;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.service-table,
+.usage-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #cbd5e1;
+}
+
+.service-table th,
+.service-table td,
+.usage-table th,
+.usage-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #374151;
+    /* usage table specific in php, but good common style */
+}
+
+.service-table thead {
+    background-color: #1e293b;
+    /* Service table specific */
+}
+
+.service-table th,
+.usage-table th {
+    font-weight: 600;
+    color: #4ade80;
+}
+
+.service-table tbody tr:hover {
+    background-color: #1e293b;
+}
+
+.contact-btn {
+    color: #4ade80;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.contact-btn:hover {
+    color: #22c55e;
+}
+
+/* Water Page Tips */
+.tips-section {
+    padding: 1rem;
+    background: rgba(74, 222, 128, 0.1);
+    border-left: 4px solid #4ade80;
+    border-radius: 0.25rem;
+    margin-top: 1.5rem;
+}
+
+.tips-title {
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 0.5rem;
+}
+
+.tips-list {
+    padding-left: 1.5rem;
+    color: #cbd5e1;
+}
+
+.tips-list li {
+    margin-bottom: 0.5rem;
+}
+
+/* =========================================
+   Crop Insight
+   ========================================= */
+.insight-panel {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    max-width: 48rem;
+    margin: 1.5rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.insight-form {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .insight-form {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+}
+
+.insight-input {
+    padding: 1rem;
+    background-color: #1e293b;
+    border: 1px solid #4ade80;
+    color: #ffffff;
+    border-radius: 0.5rem;
+    outline: none;
+    flex: 1;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.insight-input::placeholder {
+    color: #cccccc;
+}
+
+.insight-btn {
+    padding: 1rem 2rem;
+    background-color: #4ade80;
+    color: #0B1120;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    .insight-btn {
+        width: auto;
+    }
+}
+
+.insight-btn:hover {
+    transform: scale(1.05);
+    background-color: #1fc45c;
+}
+
+.insight-response {
+    margin-top: 1.5rem;
+    color: #cbd5e1;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.insight-response .error {
+    color: #ef4444;
+}
+
+/* =========================================
+   Profile Page Specifics
+   ========================================= */
+.card-hover:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(74, 222, 128, 0.4);
+}
+
+.form-field:focus {
+    border-color: #4ade80;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+}
+
+/* Password Toggle Eye Icon */
+.password-toggle-wrapper {
+    position: relative;
+}
+
+.password-toggle-wrapper input {
+    padding-right: 2.75rem;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.password-toggle-btn:hover {
+    color: #e0e0e0;
+}
+
+/* Schedule Modal Time Input Icon (Chromium & Edge) */
+input[type="time"],
+#scheduleModal input[type="time"] {
+    color-scheme: dark !important;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator,
+#scheduleModal input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) !important;
+    opacity: 1 !important;
+    cursor: pointer;
+}
+
+/* Tabs */
+.tab {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4ade80;
+    transition: width 0.3s ease;
+}
+
+.tab.active::after {
+    width: 100%;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* =========================================
+   Charts
+   ========================================= */
+.chart-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+/* =========================================
+   Footer
+   ========================================= */
+.footer {
+    background-color: #1a2332;
+    color: white;
+    padding: 20px 15px;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footer-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.footer-row div {
+    flex: 1;
+    min-width: 160px;
+}
+
+.footer h3 {
+    color: #22c55e;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.footer p,
+.footer-links ul li a {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.footer-links ul li a {
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer-links ul li a:hover {
+    color: #22c55e;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.social-icons a {
+    color: #d1d5db;
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+    color: #22c55e;
+}
+
+.footer-bottom {
+    border-top: 1px solid #374151;
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .footer-row {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+    }
+
+    .footer-links ul {
+        align-items: center;
+    }
+}
+
+/* =========================================
+   Chatbot
+   ========================================= */
+#chatbot-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
+    background-color: transparent;
+    color: #ccc;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1002;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+#chatbot-toggle.active {
+    background-color: #22c55e;
+    color: white;
+    border-color: #22c55e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#chatbot-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#chatbot-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+#chatbot-frame {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 400px;
+    height: 600px;
+    border: none;
+    border-radius: 20px;
+    z-index: 1001;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+#chatbot-frame.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}

@@ -6,7 +6,7 @@
     <title>Smart Irrigation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="index.js"></script>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL@0;1&display=swap" rel="stylesheet" />
 
@@ -33,17 +33,15 @@
                 <li><a href="Feedback.html" class="hover:text-green-600">Feedback</a></li>
             <?php endif; ?>
 
-            <li><a href="pricing.html" class="hover:text-green-600">Pricing</a></li>
-
             <?php if (isset($_SESSION['role'])): ?>
                 <li>
-                    <a href="logout.php" class="border-2 border-white rounded-md px-4 py-1 hover:bg-white hover:text-black transition-colors duration-300">
+                    <a href="auth/logout.php" class="border-2 border-white rounded-md px-4 py-1 hover:bg-white hover:text-black transition-colors duration-300">
                         Logout
                     </a>
                 </li>
             <?php else: ?>
                 <li>
-                    <a href="login.php" class="border-2 border-white rounded-md px-4 py-1 hover:bg-white hover:text-black transition-colors duration-300">
+                    <a href="auth/login.php" class="border-2 border-white rounded-md px-4 py-1 hover:bg-white hover:text-black transition-colors duration-300">
                         Login
                     </a>
                 </li>
@@ -62,7 +60,7 @@
         <div class="content">
             <h1>Smart Irrigation System</h1>
             <p>Optimize water usage with our automated system.</p>
-            <a href="login.php?form=register">
+            <a href="auth/login.php?form=register">
               <button class="hmBtn">Get Started</button>
             </a>
         </div>
@@ -642,7 +640,7 @@
     <div id="chatbot-overlay"></div>
 
     <!-- Chatbot iframe popup -->
-    <iframe id="chatbot-frame" src="chatbot.html"></iframe>
+    <iframe id="chatbot-frame" src="chatbot/chatbot.html"></iframe>
 
   
 </body>

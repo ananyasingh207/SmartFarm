@@ -1,14 +1,23 @@
 <?php
+require_once __DIR__ . '/env_loader.php';
+loadEnv(__DIR__ . '/.env');
+
 class Database {
     private static $instance = null;
     private $conn;
 
-    private $host = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $dbname = "irrigation";
+    private $host;
+    private $username;
+    private $password;
+    private $dbname;
 
     private function __construct() {
+        // Load credentials from environment (fallback to defaults)
+        $this->host = $_ENV['DB_HOST'] ?? 'localhost';
+        $this->username = $_ENV['DB_USERNAME'] ?? 'root';
+        $this->password = $_ENV['DB_PASSWORD'] ?? '';
+        $this->dbname = $_ENV['DB_NAME'] ?? 'irrigation';
+
         // Create connection
         $this->conn = new mysqli($this->host, $this->username, $this->password);
 
@@ -37,7 +46,22 @@ class Database {
         $sql = "CREATE DATABASE IF NOT EXISTS " . $this->dbname;
         if ($this->conn->query($sql) === TRUE) {
             $this->conn->select_db($this->dbname);
-            $this->createTablesAndSeed();
+
+            // Check if 'irrigation_zones' table exists and has data
+            $checkTable = $this->conn->query("SHOW TABLES LIKE 'irrigation_zones'");
+            
+            $needsSeeding = true;
+            if ($checkTable && $checkTable->num_rows > 0) {
+                $checkData = $this->conn->query("SELECT COUNT(*) as count FROM irrigation_zones");
+                $row = $checkData->fetch_assoc();
+                if ($row['count'] > 0) {
+                    $needsSeeding = false;
+                }
+            }
+
+            if ($needsSeeding) {
+                $this->createTablesAndSeed();
+            }
         } else {
             die("Error creating database: " . $this->conn->error);
         }

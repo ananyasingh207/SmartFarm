@@ -127,3 +127,90 @@ CREATE TABLE active_service (
 -- Inserting data into 'active_service'
 INSERT INTO active_service (id, in_progress, new_requests, pending_invoices) VALUES
 (1, 3, 5, 3);
+
+-- Creating 'daily_water_usage' table
+CREATE TABLE daily_water_usage (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  date DATE NOT NULL,
+  usage_liters DECIMAL(10,2) NOT NULL,
+  target_liters DECIMAL(10,2) NOT NULL
+);
+
+-- Inserting data into 'daily_water_usage'
+INSERT INTO daily_water_usage (date, usage_liters, target_liters) VALUES
+('2025-04-01', 120, 130),
+('2025-04-02', 125, 130),
+('2025-04-03', 115, 130),
+('2025-04-04', 130, 130),
+('2025-04-05', 145, 130),
+('2025-04-06', 150, 130),
+('2025-04-07', 140, 130),
+('2025-04-08', 135, 130),
+('2025-04-09', 120, 130),
+('2025-04-10', 110, 130),
+('2025-04-11', 115, 130),
+('2025-04-12', 125, 130),
+('2025-04-13', 135, 130),
+('2025-04-14', 130, 130),
+('2025-04-15', 125, 130),
+('2025-04-16', 120, 130),
+('2025-04-17', 125, 130),
+('2025-04-18', 128, 130),
+('2025-04-19', 130, 130),
+('2025-04-20', 130, 130),
+('2025-04-21', 125, 130),
+('2025-04-22', 120, 130),
+('2025-04-23', 115, 130),
+('2025-04-24', 110, 130),
+('2025-04-25', 115, 130),
+('2025-04-26', 120, 130),
+('2025-04-27', 125, 130),
+('2025-04-28', 130, 130),
+('2025-04-29', 135, 130),
+('2025-04-30', 105, 130);
+
+
+-- Creating 'zone_performance' table
+CREATE TABLE zone_performance (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  zone_name VARCHAR(100),
+  crop VARCHAR(50),
+  usage_liters DECIMAL(10,2),
+  target_liters DECIMAL(10,2)
+);
+
+-- Inserting data into 'zone_performance'
+INSERT INTO zone_performance (zone_name, crop, usage_liters, target_liters) VALUES
+('North Field', 'Wheat', 1250, 1400),
+('South Field', 'Rice', 1800, 1600),
+('East Garden', 'Corn', 400, 500);
+
+-- Creating 'irrigation_zones' table
+CREATE TABLE irrigation_zones (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  zone_name VARCHAR(100) NOT NULL,
+  moisture_level INT NOT NULL,
+  status ENUM('Active', 'Irrigating', 'Low Moisture', 'Inactive') NOT NULL
+);
+
+-- Inserting data into 'irrigation_zones' (Matching hardcoded UI values)
+INSERT INTO irrigation_zones (id, zone_name, moisture_level, status) VALUES
+(1, 'Zone 1: North Field', 65, 'Active'),
+(2, 'Zone 2: Orchard', 32, 'Low Moisture'),
+(3, 'Zone 3: South Field', 78, 'Irrigating');
+
+-- Creating 'irrigation_schedule' table
+CREATE TABLE irrigation_schedule (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  zone_id INT NOT NULL,
+  start_time TIME NOT NULL,
+  duration INT NOT NULL COMMENT 'Duration in minutes',
+  status ENUM('Pending', 'Completed') NOT NULL DEFAULT 'Pending',
+  FOREIGN KEY (zone_id) REFERENCES irrigation_zones(id) ON DELETE CASCADE
+);
+
+-- Inserting data into 'irrigation_schedule' (Matching hardcoded UI values)
+INSERT INTO irrigation_schedule (zone_id, start_time, duration, status) VALUES
+(1, '06:00:00', 30, 'Pending'),
+(2, '07:00:00', 45, 'Pending'),
+(3, '17:30:00', 20, 'Pending');

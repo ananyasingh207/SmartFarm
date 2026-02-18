@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - Smart Irrigation</title>
- <link rel="stylesheet" href="login.css">
+ <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
   <?php 
@@ -13,11 +13,11 @@
   ?>
 
   <div class="left-section">
-    <img src="media/images/img1.png" class="slide" style="opacity: 1;">
-    <img src="media/images/img2.png" class="slide">
-    <img src="media/images/img3.png" class="slide">
-    <img src="media/images/img4.png" class="slide">
-    <img src="media/images/img5.png" class="slide">
+    <img src="../media/images/img1.png" class="slide" style="opacity: 1;">
+    <img src="../media/images/img2.png" class="slide">
+    <img src="../media/images/img3.png" class="slide">
+    <img src="../media/images/img4.png" class="slide">
+    <img src="../media/images/img5.png" class="slide">
   </div>
 
   <div class="right-section">

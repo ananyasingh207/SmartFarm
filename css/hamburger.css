@@ -1,0 +1,48 @@
+/* Hamburger Button */
+.hamburger-toggle {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 50;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hamburger-toggle:hover {
+    background-color: #1e293b;
+}
+
+.hamburger-toggle span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-toggle span:last-child {
+    margin-bottom: 0;
+}
+
+.hamburger-toggle:hover span {
+    background: #86efac;
+    transform: scaleX(1.1);
+}
+
+.hamburger-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+    background: #4ade80;
+}
+
+.hamburger-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    background: #4ade80;
+}

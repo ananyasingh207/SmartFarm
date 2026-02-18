@@ -1,0 +1,528 @@
+/* =========================================
+   Global & Reset
+   ========================================= */
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0B1120 0%, #1e293b 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* =========================================
+   Sidebar
+   ========================================= */
+.sidebar-container {
+    width: 16rem;
+    background-color: #111827;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 40;
+    transition: transform 0.4s ease-in-out;
+    transform: translateX(-100%);
+}
+
+.sidebar-container.open {
+    transform: translateX(0);
+}
+
+.sidebar-brand {
+    padding: 3.5rem 2rem 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4ade80;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.sidebar-nav-item,
+.menu-item {
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(1),
+.sidebar-container.open .menu-item:nth-child(1) {
+    transition-delay: 0.1s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(2),
+.sidebar-container.open .menu-item:nth-child(2) {
+    transition-delay: 0.2s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(3),
+.sidebar-container.open .menu-item:nth-child(3) {
+    transition-delay: 0.3s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(4),
+.sidebar-container.open .menu-item:nth-child(4) {
+    transition-delay: 0.4s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(5),
+.sidebar-container.open .menu-item:nth-child(5) {
+    transition-delay: 0.5s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-container.open .sidebar-nav-item:nth-child(6),
+.sidebar-container.open .menu-item:nth-child(6) {
+    transition-delay: 0.6s;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background-color: #1e293b;
+}
+
+.icon-green {
+    margin-right: 0.75rem;
+    color: #4ade80;
+}
+
+.sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #1e293b;
+}
+
+/* =========================================
+   Layout & Main Content
+   ========================================= */
+.dashboard-main {
+    transition: margin-left 0.4s ease-in-out;
+}
+
+.sidebar-container.open+.dashboard-main {
+    margin-left: 16rem;
+}
+
+@media (max-width: 1024px) {
+    .sidebar-container.open+.dashboard-main {
+        margin-left: 0;
+    }
+}
+
+/* =========================================
+   Header
+   ========================================= */
+.dashboard-header {
+    background-color: #111827;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+}
+
+.user-greeting {
+    margin-left: 2rem;
+}
+
+.dashboard-title {
+    padding-left: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4ade80;
+}
+
+.user-name {
+    padding-left: 0.5rem;
+    color: #cbd5e1;
+    font-size: 1rem;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.current-date {
+    color: #cbd5e1;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.user-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 2px solid #4ade80;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1f2937;
+}
+
+.user-avatar i {
+    font-size: 1.6rem;
+    color: #4ade80;
+}
+
+/* =========================================
+   Dashboard (Manufacturer.php)
+   ========================================= */
+.dashboard-content {
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    margin: 0 auto;
+}
+
+.dashboard-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Widget Grid */
+.widget-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.widget-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
+}
+
+/* Widget Cards */
+.widget-card {
+    margin: 0.6rem;
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.widget-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(74, 222, 128, 0.4);
+}
+
+.widget-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.widget-title i {
+    margin-right: 0.75rem;
+    border: 2px solid #4ade80;
+    border-radius: 50%;
+    padding: 0.25rem;
+}
+
+.widget-value {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+}
+
+.widget-action {
+    margin-top: 1.5rem;
+    color: #4ade80;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.widget-action:hover {
+    color: #22c55e;
+}
+
+/* Widget Table */
+.widget-table {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+/* Table Styling */
+.service-table {
+    width: 100%;
+    color: #cbd5e1;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(17, 24, 39, 0.5);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.service-table th,
+.service-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.service-table th {
+    background: rgba(74, 222, 128, 0.2);
+    color: #4ade80;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.service-table tr:nth-child(even) {
+    background: rgba(31, 41, 55, 0.3);
+}
+
+/* =========================================
+   Manufacturer Profile Specifics
+   ========================================= */
+/* Glassmorphism for cards */
+.glass-card {
+    background: rgba(31, 41, 55, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+/* Hover effects */
+.card-hover:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(74, 222, 128, 0.4);
+}
+
+/* Form field styling */
+.form-field:focus {
+    border-color: #4ade80;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+}
+
+/* Tab styling */
+.tab {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4ade80;
+    transition: width 0.3s ease;
+}
+
+.tab.active::after {
+    width: 100%;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* =========================================
+   Chatbot
+   ========================================= */
+#chatbot-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
+    background-color: transparent;
+    color: #ccc;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1002;
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+#chatbot-toggle.active {
+    background-color: #22c55e;
+    color: white;
+    border-color: #22c55e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#chatbot-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#chatbot-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+#chatbot-frame {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 400px;
+    height: 600px;
+    border: none;
+    border-radius: 20px;
+    z-index: 1001;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+#chatbot-frame.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* =========================================
+   Responsive Design (Manufacturer specific)
+   ========================================= */
+@media (max-width: 768px) {
+    .widget-grid {
+        flex-direction: column;
+    }
+
+    .widget-column {
+        width: 100%;
+    }
+
+    .widget-card {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .widget-table {
+        margin-left: 0;
+        margin-right: 0;
+        overflow-x: auto;
+    }
+
+    .service-table {
+        min-width: 600px;
+        /* Ensures table scrolls horizontally */
+    }
+
+    #chatbot-frame {
+        width: 90%;
+        height: 80vh;
+        bottom: 80px;
+        right: 5%;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-content {
+        padding: 1rem;
+    }
+
+    .dashboard-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .user-greeting {
+        margin-left: 0;
+    }
+
+    .header-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .widget-title {
+        font-size: 1rem;
+    }
+
+    .widget-value {
+        font-size: 1.5rem;
+    }
+}

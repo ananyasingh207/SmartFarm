@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_POST["submit"])) {
-    $targetDir = "media/uploads/";
+    $targetDir = __DIR__ . "/../media/uploads/";
     
     // Create directory if it doesn't exist
     if (!is_dir($targetDir)) {
