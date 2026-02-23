@@ -1,5 +1,5 @@
 function fetchWeather(lat, lon) {
-  const url = `weather_api.php?lat=${lat}&lon=${lon}`;
+  const url = `api/weather_api.php?lat=${lat}&lon=${lon}`;
   fetch(url)
     .then(response => {
       if (!response.ok) {

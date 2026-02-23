@@ -1,5 +1,5 @@
 <?php
-require_once 'db.php';
+require_once __DIR__ . '/../config/db.php';
 
 // Get form data from POST
 $name = $_POST["name"];

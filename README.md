@@ -41,68 +41,84 @@ A full-stack web application for **smart irrigation management** built with PHP,
 
 ```
 SmartFarm/
-├── auth/                    # Authentication
-│   ├── login.php            # Login & registration page
-│   ├── auth.php             # Form handler (login/register logic)
-│   └── logout.php           # Session destroy & redirect
 │
-├── chatbot/                 # AI Chatbot module
-│   ├── chatbot.html         # Chatbot UI (embedded via iframe)
-│   ├── chatbot.css          # Chatbot styles
-│   ├── chatbot.js           # Frontend chat logic
-│   ├── chatbot_api.php      # Server-side Gemini API proxy
-│   └── upload.php           # File upload handler
+├── index.php                        # Landing page
+├── index.js                         # Landing page scripts
 │
-├── css/                     # Stylesheets
-│   ├── farmer.css           # Farmer dashboard styles
-│   ├── manufacturer.css     # Manufacturer dashboard styles
-│   ├── service.css          # Service provider dashboard styles
-│   ├── login.css            # Login page styles
-│   ├── hamburger.css        # Mobile hamburger menu
-│   └── index.css            # Landing page styles
+├── farmer/                          # Farmer module
+│   ├── farmer.php                   # Farmer dashboard
+│   ├── farmerIrrigation.php         # Irrigation management
+│   ├── farmerWater.php              # Water usage analytics
+│   └── farmerProfile.php            # Farmer profile
 │
-├── src/                     # PHPMailer library
+├── manufacturer/                    # Manufacturer module
+│   ├── manufacturer.php             # Manufacturer dashboard
+│   └── manuProfile.php             # Manufacturer profile
+│
+├── service/                         # Service Provider module
+│   ├── service.php                  # Service provider dashboard
+│   └── serviceProfile.php          # Service provider profile
+│
+├── auth/                            # Authentication
+│   ├── login.php                    # Login & registration page
+│   ├── auth.php                     # Form handler (login/register logic)
+│   └── logout.php                   # Session destroy & redirect
+│
+├── api/                             # Backend API endpoints
+│   ├── weather_api.php              # OpenWeatherMap proxy
+│   ├── getDashboardWaterData.php    # Dashboard chart data
+│   ├── getWaterData.php             # Water analytics data
+│   ├── download_report.php          # CSV report generator
+│   ├── getSchedule.php              # Irrigation schedule data
+│   ├── getZones.php                 # Irrigation zones data
+│   ├── addSchedule.php              # Add irrigation schedule
+│   ├── deleteSchedule.php           # Delete irrigation schedule
+│   ├── updateZoneStatus.php         # Toggle zone status
+│   ├── update_profile.php           # Profile update handler
+│   └── submit_feedback.php          # Feedback form handler
+│
+├── config/                          # Configuration
+│   ├── db.php                       # Database singleton (auto-init)
+│   ├── connect.php                  # DB connection wrapper
+│   └── env_loader.php               # Native PHP .env parser
+│
+├── database/                        # Database scripts
+│   ├── seed.php                     # Database seeder (sample data)
+│   └── queries.sql                  # SQL schema
+│
+├── chatbot/                         # AI Chatbot module
+│   ├── chatbot.html                 # Chatbot UI (embedded via iframe)
+│   ├── chatbot.css                  # Chatbot styles
+│   ├── chatbot.js                   # Frontend chat logic
+│   ├── chatbot_api.php              # Server-side Gemini API proxy
+│   └── upload.php                   # File upload handler
+│
+├── css/                             # Stylesheets
+│   ├── index.css                    # Landing page styles
+│   ├── farmer.css                   # Farmer dashboard styles
+│   ├── manufacturer.css             # Manufacturer dashboard styles
+│   ├── service.css                  # Service provider styles
+│   ├── hamburger.css                # Mobile sidebar menu
+│   └── login.css                    # Login page styles
+│
+├── src/                             # PHPMailer library
 │   ├── PHPMailer.php
 │   ├── SMTP.php
-│   ├── Exception.php
-│   └── ...
+│   └── Exception.php
 │
-├── media/                   # Images, videos, uploads
+├── media/                           # Static assets
+│   ├── images/                      # Product & background images
+│   ├── videos/                      # Background videos
+│   └── uploads/                     # User-uploaded files
 │
-├── .env                     # Environment variables (secrets)
-├── .htaccess                # Apache security rules
-├── .gitignore               # Git exclusions
-├── env_loader.php           # Native PHP .env parser
-├── db.php                   # Database singleton (auto-init)
-├── connect.php              # DB connection wrapper
-├── queries                  # SQL schema + seed data
-├── seed.php                 # Database seeder script
+├── pages/                           # Static pages
+│   ├── FAQs.html                    # FAQ page
+│   └── Feedback.html                # Feedback form page
 │
-├── index.php                # Landing page
-├── farmer.php               # Farmer dashboard
-├── farmerIrrigation.php     # Irrigation management page
-├── farmerWater.php          # Water usage analytics page
-├── farmerProfile.php        # Farmer profile page
-├── manufacturer.php         # Manufacturer dashboard
-├── manuProfile.php          # Manufacturer profile page
-├── service.php              # Service provider dashboard
-├── serviceProfile.php       # Service provider profile page
-│
-├── weather_api.php          # Server-side OpenWeatherMap proxy
-├── download_report.php      # CSV report generator
-├── update_profile.php       # Profile update handler
-├── submit_feedback.php      # Feedback form handler
-├── getDashboardWaterData.php # Dashboard chart data API
-├── getWaterData.php         # Water analytics data API
-├── getSchedule.php          # Irrigation schedule API
-├── getZones.php             # Irrigation zones API
-├── addSchedule.php          # Add schedule API
-├── deleteSchedule.php       # Delete schedule API
-├── updateZoneStatus.php     # Toggle zone status API
-│
-├── FAQs.html                # FAQ page
-├── Feedback.html            # Feedback form page
-└── index.js                 # Landing page scripts
+├── .env                             # Environment variables (not tracked)
+├── .htaccess                        # Apache security rules
+├── .gitignore                       # Git exclusions
+└── README.md                        # This file
 ```
 
 ---
@@ -118,6 +134,7 @@ SmartFarm/
 | **AI Chatbot** | Google Gemini API |
 | **Weather** | OpenWeatherMap API |
 | **Charts** | Chart.js |
+| **Maps** | Leaflet.js + OpenStreetMap |
 | **Icons** | Font Awesome 6 |
 
 ---
@@ -151,7 +168,7 @@ C:\xampp\htdocs\SmartFarm
 
 ### 3. Configure Environment
 
-Edit the `.env` file in the project root with your credentials:
+Create a `.env` file in the project root with your credentials:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
@@ -177,14 +194,14 @@ DB_NAME=irrigation
 http://localhost/SmartFarm/
 ```
 
-The database and tables are **automatically created** on first load via `db.php`. No manual SQL setup needed.
+The database and tables are **automatically created** on first load via `config/db.php`. No manual SQL setup needed.
 
 ### 6. Seed Sample Data (Optional)
 
 To populate the database with sample irrigation data, visit:
 
 ```
-http://localhost/SmartFarm/seed.php
+http://localhost/SmartFarm/database/seed.php
 ```
 
 ---
@@ -204,9 +221,9 @@ http://localhost/SmartFarm/seed.php
 
 | Role | Dashboard | Features |
 |---|---|---|
-| **Farmer** | `farmer.php` | Irrigation, water analytics, weather, reports, chatbot |
-| **Manufacturer** | `manufacturer.php` | Equipment management, chatbot |
-| **Service Provider** | `service.php` | Service management, chatbot |
+| **Farmer** | `farmer/farmer.php` | Irrigation, water analytics, weather, reports, chatbot |
+| **Manufacturer** | `manufacturer/manufacturer.php` | Equipment management, chatbot |
+| **Service Provider** | `service/service.php` | Service management, chatbot |
 
 ---
 

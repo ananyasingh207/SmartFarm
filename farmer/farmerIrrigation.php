@@ -2,7 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require_once 'db.php';
+require_once __DIR__ . '/../config/db.php';
 
 // Create a single connection to the database
 $conn = Database::getInstance()->getConnection();
@@ -69,8 +69,8 @@ $conn->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
  
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/hamburger.css">
-    <link rel="stylesheet" href="css/farmer.css">
+    <link rel="stylesheet" href="../css/hamburger.css">
+    <link rel="stylesheet" href="../css/farmer.css">
 </head>
 
 <body>
@@ -92,11 +92,11 @@ $conn->close();
         <li class="sidebar-nav-item"><a href="farmerProfile.php" class="sidebar-link"><i class="fas fa-user icon-green"></i> Profile</a></li>
         <li class="sidebar-nav-item"><a href="#" class="sidebar-link"><i class="fas fa-tint icon-green"></i> Irrigation</a></li>
         <li class="sidebar-nav-item"><a href="farmerWater.php" class="sidebar-link"><i class="fas fa-chart-bar icon-green"></i> Water Usage</a></li>
-        <li class="sidebar-nav-item"><a href="index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
+        <li class="sidebar-nav-item"><a href="../index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
       </ul>
     </nav>
     <div class="sidebar-footer">
-      <a href="auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
+      <a href="../auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
     </div>
   </aside>
 
@@ -301,7 +301,7 @@ $conn->close();
       <div id="chatbot-overlay"></div>
   
       <!-- Chatbot iframe popup -->
-      <iframe id="chatbot-frame" src="chatbot/chatbot.html"></iframe>
+      <iframe id="chatbot-frame" src="../chatbot/chatbot.html"></iframe>
 
     <script>
 
@@ -353,7 +353,7 @@ $conn->close();
 
     // 1. Fetch and Render Zones
     function fetchZones() {
-        fetch('getZones.php')
+        fetch('../api/getZones.php')
             .then(r => r.json())
             .then(zones => {
                 const container = document.getElementById('zonesContainer');
@@ -424,7 +424,7 @@ $conn->close();
 
     // 2. Fetch and Render Schedule
     function fetchSchedule() {
-        fetch('getSchedule.php')
+        fetch('../api/getSchedule.php')
             .then(r => r.json())
             .then(schedules => {
                 const tbody = document.getElementById('scheduleTable');
@@ -463,7 +463,7 @@ $conn->close();
         formData.append('zone_id', zoneId);
         formData.append('action', action);
         
-        fetch('updateZoneStatus.php', {
+        fetch('../api/updateZoneStatus.php', {
             method: 'POST',
             body: formData
         })
@@ -521,7 +521,7 @@ $conn->close();
             formData.append('start_time', startTime);
             formData.append('duration', duration);
             
-            fetch('addSchedule.php', {
+            fetch('../api/addSchedule.php', {
                 method: 'POST',
                 body: formData
             })
@@ -546,7 +546,7 @@ $conn->close();
         const formData = new FormData();
         formData.append('schedule_id', id);
         
-        fetch('deleteSchedule.php', {
+        fetch('../api/deleteSchedule.php', {
             method: 'POST',
             body: formData
         })
@@ -567,7 +567,7 @@ $conn->close();
         startAllBtn.addEventListener('click', () => {
             if(confirm('Start irrigation for ALL zones?')) {
                  // Fetch all zones and start them (naive implementation for now)
-                 fetch('getZones.php').then(r=>r.json()).then(zones => {
+                 fetch('../api/getZones.php').then(r=>r.json()).then(zones => {
                      zones.forEach(z => {
                          if(z.status !== 'Irrigating') toggleZone(z.id, 'Irrigate');
                      });
@@ -580,7 +580,7 @@ $conn->close();
     if(stopAllBtn) {
         stopAllBtn.addEventListener('click', () => {
              if(confirm('Stop ALL irrigation?')) {
-                 fetch('getZones.php').then(r=>r.json()).then(zones => {
+                 fetch('../api/getZones.php').then(r=>r.json()).then(zones => {
                      zones.forEach(z => {
                          if(z.status === 'Irrigating') toggleZone(z.id, 'Stop');
                      });

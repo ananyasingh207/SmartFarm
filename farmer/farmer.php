@@ -5,18 +5,18 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['role'])) {
-    header("Location: auth/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
 if ($_SESSION['role'] !== 'farmer') {
-    header("Location: auth/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
 
 
-require_once 'db.php';
+require_once __DIR__ . '/../config/db.php';
 $conn = Database::getInstance()->getConnection();
 
 // Fetch active devices
@@ -48,8 +48,8 @@ $conn->close();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/hamburger.css">
-  <link rel="stylesheet" href="css/farmer.css">
+  <link rel="stylesheet" href="../css/hamburger.css">
+  <link rel="stylesheet" href="../css/farmer.css">
 </head>
 <body>
   <!-- Hamburger Button -->
@@ -70,11 +70,11 @@ $conn->close();
         <li class="menu-item"><a href="farmerProfile.php" class="sidebar-link"><i class="fas fa-user icon-green"></i> Profile</a></li>
         <li class="menu-item"><a href="farmerIrrigation.php" class="sidebar-link"><i class="fas fa-tint icon-green"></i> Irrigation</a></li>
         <li class="menu-item"><a href="farmerWater.php" class="sidebar-link"><i class="fas fa-chart-bar icon-green"></i> Water Usage</a></li>
-        <li class="menu-item"><a href="index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
+        <li class="menu-item"><a href="../index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
       </ul>
     </nav>
     <div class="sidebar-footer">
-      <a href="auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
+      <a href="../auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
     </div>
   </aside>
 
@@ -215,7 +215,7 @@ $conn->close();
             <ul>
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="FAQs.html">FAQ</a></li>
+                <li><a href="../pages/FAQs.html">FAQ</a></li>
             </ul>
           </div>
           <div class="footer-socials">
@@ -247,7 +247,7 @@ $conn->close();
   <div id="chatbot-overlay"></div>
 
   <!-- Chatbot iframe popup -->
-  <iframe id="chatbot-frame" src="chatbot/chatbot.html"></iframe>
+  <iframe id="chatbot-frame" src="../chatbot/chatbot.html"></iframe>
 
   <!-- JavaScript (Including Font Awesome for Icons) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -279,7 +279,7 @@ $conn->close();
     }
   });
     function fetchWeather(lat, lon) {
-    const url = `weather_api.php?lat=${lat}&lon=${lon}`;
+    const url = `../api/weather_api.php?lat=${lat}&lon=${lon}`;
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -405,7 +405,7 @@ $conn->close();
 
     // Fetch Data Function
     function fetchDashboardData(range) {
-        fetch(`getDashboardWaterData.php?range=${range}`)
+        fetch(`../api/getDashboardWaterData.php?range=${range}`)
             .then(response => response.json())
             .then(data => {
                 if(data.error) {
@@ -432,7 +432,7 @@ $conn->close();
     // Download Report Button
     document.getElementById('downloadReport').addEventListener('click', () => {
       const range = document.getElementById('timeRange').value;
-      window.location.href = `download_report.php?range=${range}`;
+      window.location.href = `../api/download_report.php?range=${range}`;
     });
 
     // Service Finder Search

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/env_loader.php';
-loadEnv(__DIR__ . '/.env');
+loadEnv(__DIR__ . '/../.env');
 
 class Database {
     private static $instance = null;
@@ -68,7 +68,7 @@ class Database {
     }
 
     private function createTablesAndSeed() {
-        $queriesFile = __DIR__ . '/queries';
+        $queriesFile = __DIR__ . '/../database/queries.sql';
         if (!file_exists($queriesFile)) {
             // If queries file doesn't exist, we can't do anything
             return;

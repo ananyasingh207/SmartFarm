@@ -3,7 +3,7 @@
  * Server-side proxy for Gemini API calls.
  * Keeps the API key on the server — never exposed to the browser.
  */
-require_once __DIR__ . '/../env_loader.php';
+require_once __DIR__ . '/../config/env_loader.php';
 loadEnv(__DIR__ . '/../.env');
 
 header('Content-Type: application/json');

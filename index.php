@@ -23,14 +23,14 @@
 
             if (isset($_SESSION['role'])): ?>
                 <?php if ($_SESSION['role'] === 'farmer'): ?>
-                    <li><a href="farmer.php" class="hover:text-green-600">Dashboard</a></li>
+                    <li><a href="farmer/farmer.php" class="hover:text-green-600">Dashboard</a></li>
                 <?php elseif ($_SESSION['role'] === 'manufacturer'): ?>
-                    <li><a href="manufacturer.php" class="hover:text-green-600">Dashboard</a></li>
+                    <li><a href="manufacturer/manufacturer.php" class="hover:text-green-600">Dashboard</a></li>
                 <?php elseif ($_SESSION['role'] === 'service'): ?>
-                    <li><a href="service.php" class="hover:text-green-600">Dashboard</a></li>
+                    <li><a href="service/service.php" class="hover:text-green-600">Dashboard</a></li>
                 <?php endif; ?>
         
-                <li><a href="Feedback.html" class="hover:text-green-600">Feedback</a></li>
+                <li><a href="pages/Feedback.html" class="hover:text-green-600">Feedback</a></li>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['role'])): ?>
@@ -607,7 +607,7 @@
                 <ul>
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    <li><a href="FAQs.html">FAQ</a></li>
+                    <li><a href="pages/FAQs.html">FAQ</a></li>
                 </ul>
               </div>
               <div class="footer-socials">

@@ -1,4 +1,5 @@
-require_once 'db.php';
+<?php
+require_once __DIR__ . '/db.php';
 
 // Get connection instance
 $db = Database::getInstance();

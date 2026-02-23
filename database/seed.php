@@ -2,7 +2,7 @@
 // seed.php - Standalone script to seed mock data
 // Usage: Run manually via browser or CLI (php seed.php)
 
-require_once 'db.php';
+require_once __DIR__ . '/../config/db.php';
 
 // Enable error reporting for debugging this script
 error_reporting(E_ALL);

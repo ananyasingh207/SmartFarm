@@ -5,18 +5,18 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['role'])) {
-    header("Location: auth/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
 if ($_SESSION['role'] !== 'service') {
-    header("Location: auth/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
 
 
-require_once 'db.php';
+require_once __DIR__ . '/../config/db.php';
 $conn = Database::getInstance()->getConnection();
 
 $query = "SELECT * FROM active_service WHERE id = 1";  
@@ -47,8 +47,8 @@ $conn->close();
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/hamburger.css">
-  <link rel="stylesheet" href="css/service.css">
+    <link rel="stylesheet" href="../css/hamburger.css">
+  <link rel="stylesheet" href="../css/service.css">
 </head>
 
 <body>
@@ -68,11 +68,11 @@ $conn->close();
             <ul type="none">
                 <li class="menu-item"><a href="service.php" class="sidebar-link"><i class="fas fa-home icon-green"></i> Dashboard</a></li>
                 <li class="menu-item"><a href="serviceProfile.php" class="sidebar-link"><i class="fas fa-user icon-green"></i> Profile</a></li>
-                <li class="menu-item"><a href="index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
+                <li class="menu-item"><a href="../index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
             </ul>
         </nav>
         <div class="sidebar-footer">
-            <a href="auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
+            <a href="../auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
         </div>
     </aside>
 
@@ -172,7 +172,7 @@ $conn->close();
       <div id="chatbot-overlay"></div>
   
       <!-- Chatbot iframe popup -->
-      <iframe id="chatbot-frame" src="chatbot/chatbot.html"></iframe>
+      <iframe id="chatbot-frame" src="../chatbot/chatbot.html"></iframe>
     <script>
         // Hamburger Menu Toggle
         const hamburger = document.getElementById('hamburger');

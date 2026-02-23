@@ -1,3 +1,8 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +13,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/hamburger.css">
-  <link rel="stylesheet" href="css/farmer.css">
+  <link rel="stylesheet" href="../css/hamburger.css">
+  <link rel="stylesheet" href="../css/farmer.css">
 </head>
 
 <body>
@@ -30,11 +35,11 @@
         <li class="menu-item"><a href="farmerProfile.php" class="sidebar-link"><i class="fas fa-user icon-green"></i> Profile</a></li>
         <li class="menu-item"><a href="farmerIrrigation.php" class="sidebar-link"><i class="fas fa-tint icon-green"></i> Irrigation</a></li>
         <li class="menu-item"><a href="#" class="sidebar-link"><i class="fas fa-chart-bar icon-green"></i> Water Usage</a></li>
-        <li class="menu-item"><a href="index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
+        <li class="menu-item"><a href="../index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
       </ul>
     </nav>
     <div class="sidebar-footer">
-      <a href="auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
+      <a href="../auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
     </div>
   </aside>
 
@@ -43,7 +48,7 @@
     <header class="dashboard-header">
       <div class="user-greeting">
         <h1 class="dashboard-title">Water Usage</h1>
-        <p class="breadcrumb"><a href="dboard.html">Dashboard</a> / Water Usage</p>
+        <p class="breadcrumb"><a href="farmer.php">Dashboard</a> / Water Usage</p>
       </div>
       <div class="header-controls">
         <span class="current-date"><?php echo date("F j, Y"); ?></span>
@@ -139,7 +144,7 @@
   <div id="chatbot-overlay"></div>
 
   <!-- Chatbot iframe popup -->
-  <iframe id="chatbot-frame" src="chatbot/chatbot.html"></iframe>
+  <iframe id="chatbot-frame" src="../chatbot/chatbot.html"></iframe>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <script>
@@ -220,7 +225,7 @@
 
       // Function to fetch data
       function fetchData(period = 'month') {
-        fetch(`getWaterData.php?period=${period}`)
+        fetch(`../api/getWaterData.php?period=${period}`)
           .then(response => response.json())
           .then(data => {
             if (data.error) {
@@ -290,7 +295,7 @@
         exportBtn.addEventListener('click', () => {
             const activeBtn = document.querySelector('.time-btn.active');
             const period = activeBtn ? activeBtn.getAttribute('data-period') : 'month';
-            window.location.href = `download_report.php?range=${period}`;
+            window.location.href = `../api/download_report.php?range=${period}`;
         });
       }
     });

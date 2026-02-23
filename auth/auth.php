@@ -5,8 +5,8 @@ use PHPMailer\PHPMailer\Exception;
 require __DIR__ . '/../src/Exception.php';
 require __DIR__ . '/../src/PHPMailer.php';
 require __DIR__ . '/../src/SMTP.php';
-require_once __DIR__ . '/../db.php';
-require_once __DIR__ . '/../env_loader.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/env_loader.php';
 loadEnv(__DIR__ . '/../.env');
 
 session_start();
@@ -101,11 +101,11 @@ if ($type === 'register') {
 
         // Redirect to role dashboard
         if ($role === 'farmer') {
-            header("Location: ../farmer.php");
+            header("Location: ../farmer/farmer.php");
         } elseif ($role === 'manufacturer') {
-            header("Location: ../manufacturer.php");
+            header("Location: ../manufacturer/manufacturer.php");
         } else {
-            header("Location: ../service.php");
+            header("Location: ../service/service.php");
         }    
         exit();
 }
@@ -160,11 +160,11 @@ if ($type === 'login') {
 
             // Redirect to role dashboard
             if ($user['role'] === 'farmer') {
-                header("Location: ../farmer.php");
+                header("Location: ../farmer/farmer.php");
             } elseif ($user['role'] === 'manufacturer') {
-                header("Location: ../manufacturer.php");
+                header("Location: ../manufacturer/manufacturer.php");
             } else {
-                header("Location: ../service.php");
+                header("Location: ../service/service.php");
             }
             exit();
         } else {

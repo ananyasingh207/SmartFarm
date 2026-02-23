@@ -3,8 +3,8 @@
  * Server-side proxy for OpenWeatherMap API.
  * Keeps the API key on the server — never exposed to the browser.
  */
-require_once 'env_loader.php';
-loadEnv(__DIR__ . '/.env');
+require_once __DIR__ . '/../config/env_loader.php';
+loadEnv(__DIR__ . '/../.env');
 
 header('Content-Type: application/json');
 

@@ -1,6 +1,83 @@
-# Environment
+# ========================
+# Environment & Secrets
+# ========================
 .env
+.env.*
+*.env
+!.env.example
 
-# IDE
+# ========================
+# IDE & Editor
+# ========================
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ========================
+# OS-Generated Files
+# ========================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# ========================
+# PHP & Composer
+# ========================
+/vendor/
+composer.lock
+
+# ========================
+# Node / NPM (if used)
+# ========================
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========================
+# Logs & Debug
+# ========================
+*.log
+error_log
+php_errors.log
+
+# ========================
+# Uploads & User Content
+# ========================
+media/uploads/*
+chatbot/uploads/*
+!media/uploads/.gitkeep
+!chatbot/uploads/.gitkeep
+
+# ========================
+# Compiled / Cache
+# ========================
+*.cache
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# ========================
+# Archives
+# ========================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ========================
+# Database Dumps
+# ========================
+*.sql
+!database/*.sql

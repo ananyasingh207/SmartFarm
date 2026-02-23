@@ -16,8 +16,8 @@ $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : 'user@example.com'
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/hamburger.css">
-  <link rel="stylesheet" href="css/farmer.css">
+  <link rel="stylesheet" href="../css/hamburger.css">
+  <link rel="stylesheet" href="../css/farmer.css">
 </head>
 
 <body class="min-h-screen">
@@ -40,11 +40,11 @@ $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : 'user@example.com'
         <li class="menu-item"><a href="farmerProfile.php" class="sidebar-link" style="background-color: #1e293b;"><i class="fas fa-user icon-green"></i> Profile</a></li>
         <li class="menu-item"><a href="farmerIrrigation.php" class="sidebar-link"><i class="fas fa-tint icon-green"></i> Irrigation</a></li>
         <li class="menu-item"><a href="farmerWater.php" class="sidebar-link"><i class="fas fa-chart-bar icon-green"></i> Water Usage</a></li>
-        <li class="menu-item"><a href="index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
+        <li class="menu-item"><a href="../index.php" class="sidebar-link"><i class="fas fa-arrow-left icon-green"></i> Back to Home</a></li>
       </ul>
     </nav>
     <div class="sidebar-footer">
-      <a href="auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
+      <a href="../auth/logout.php" class="sidebar-link"><i class="fas fa-sign-out-alt icon-green"></i> Logout</a>
     </div>
   </aside>
 
@@ -148,7 +148,7 @@ $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : 'user@example.com'
       submitBtn.textContent = 'Saving...';
       submitBtn.disabled = true;
 
-      fetch('update_profile.php', {
+      fetch('../api/update_profile.php', {
         method: 'POST',
         body: formData
       })

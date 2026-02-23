@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Feedback - Smart Irrigation</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-[#121826] text-white min-h-screen flex flex-col justify-center items-center px-4 py-10">
 
   <!-- Feedback Form -->
@@ -15,7 +17,7 @@
       <p class="text-gray-400 text-sm">Help us improve your Smart Irrigation experience</p>
     </div>
 
-    <form id="feedbackForm" method="POST" action="submit_feedback.php" class="space-y-5">
+    <form id="feedbackForm" method="POST" action="../api/submit_feedback.php" class="space-y-5">
       <!-- Name -->
       <div>
         <label for="name" class="block mb-1 text-sm font-medium text-gray-300">Your Name</label>
@@ -65,29 +67,31 @@
   </div>
 
   <!-- Thank You Message -->
-  <div id="thankYouContainer" class="hidden w-full max-w-md bg-[#1c2431] p-8 rounded-2xl shadow-lg border border-green-600 text-center">
+  <div id="thankYouContainer"
+    class="hidden w-full max-w-md bg-[#1c2431] p-8 rounded-2xl shadow-lg border border-green-600 text-center">
     <h1 class="text-3xl font-bold text-green-500 mb-4">Thank You for Your Feedback!</h1>
     <p class="text-gray-300 mb-6">
       We appreciate your input, <span id="userName" class="font-semibold text-white"></span>. Your role as a
       <span id="userRole" class="text-green-400 font-semibold"></span> helps us improve.
     </p>
-    <button onclick="location.reload()" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+    <button onclick="location.reload()"
+      class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
       Submit Another Response
     </button>
   </div>
 
   <script>
     const form = document.getElementById("feedbackForm");
-  
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-  
+
       // Get values
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const role = document.getElementById("role").value.trim();
       const message = document.getElementById("message").value.trim();
-  
+
       // Error elements
       const errors = {
         name: document.getElementById("nameError"),
@@ -95,12 +99,12 @@
         role: document.getElementById("roleError"),
         message: document.getElementById("messageError")
       };
-  
+
       // Hide all errors
       Object.values(errors).forEach(error => error.classList.add("hidden"));
-  
+
       let valid = true;
-  
+
       if (!name) {
         errors.name.classList.remove("hidden");
         valid = false;
@@ -117,39 +121,39 @@
         errors.message.classList.remove("hidden");
         valid = false;
       }
-  
+
       if (!valid) return;  // Stop if validation failed
-  
+
       // Create FormData object from the form
       const formData = new FormData(form);
-      
+
       // Submit using fetch with FormData
       fetch(form.action, {
         method: form.method,
         body: formData
       })
-      .then(res => {
-        if (!res.ok) throw new Error("Submission failed");
-        return res.text();
-      })
-      .then(data => {
-        // Save to localStorage only after successful submission
-        localStorage.setItem("feedbackName", name);
-        localStorage.setItem("feedbackRole", role);
-        
-        // Show thank you message
-        document.getElementById("formContainer").classList.add("hidden");
-        document.getElementById("thankYouContainer").classList.remove("hidden");
-        document.getElementById("userName").textContent = name;
-        document.getElementById("userRole").textContent = 
-          role.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        alert("Error submitting feedback: " + err.message);
-      });
+        .then(res => {
+          if (!res.ok) throw new Error("Submission failed");
+          return res.text();
+        })
+        .then(data => {
+          // Save to localStorage only after successful submission
+          localStorage.setItem("feedbackName", name);
+          localStorage.setItem("feedbackRole", role);
+
+          // Show thank you message
+          document.getElementById("formContainer").classList.add("hidden");
+          document.getElementById("thankYouContainer").classList.remove("hidden");
+          document.getElementById("userName").textContent = name;
+          document.getElementById("userRole").textContent =
+            role.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        })
+        .catch(err => {
+          console.error("Error:", err);
+          alert("Error submitting feedback: " + err.message);
+        });
     });
-  
+
     // Real-time error removal
     ["name", "email", "role", "message"].forEach(id => {
       const input = document.getElementById(id);
@@ -164,4 +168,5 @@
     });
   </script>
 </body>
+
 </html>
